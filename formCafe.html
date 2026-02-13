@@ -1,0 +1,74 @@
+<!-- 
+Desafio 4
+HTML
+Crie uma página de formulário para contato para o café, que inclua os seguintes campos:
+ Nome Completo
+ Email
+ Telefone
+ Assunto
+ Mensagem
+Utilize as tags aprendidas para criar este formulário e certifique-se de que todos os
+campos, exceto o telefone, são obrigatórios.
+Depois de criar a página, conecte-a com o seu portfólio e suba para o GitHub.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato - Café com Gatos</title>
+</head>
+
+<body>
+  <header>
+    <h1>Contato - Café com Gatos</h1>
+    <p>
+      <a href="./index.html">Voltar ao meu portfólio</a>
+    </p>
+  </header>
+
+  <main>
+    <form action="#" method="post">
+      <div>
+        <label for="nome">Nome Completo *</label><br />
+        <input type="text" id="nome" name="nome" required />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="email">Email *</label><br />
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="telefone">Telefone</label><br />
+        <input type="tel" id="telefone" name="telefone" />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="assunto">Assunto *</label><br />
+        <input type="text" id="assunto" name="assunto" required />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="mensagem">Mensagem *</label><br />
+        <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+      </div>
+
+      <br />
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p>* Campos obrigatórios</p>
+  </main>
+</body>
+</html>
