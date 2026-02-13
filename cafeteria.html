@@ -7,6 +7,11 @@ pode ser um aviso para alérgicos).
 Conecte essa atividade ao seu portifólio utilizando a tag A.
 Não se preocupe com a beleza, trabalharemos isso ao longo do curso. Pense apenas nos
 dados que serão exibidos, e na estrutura em HTML.
+
+ Desafio:
+Na página da cafeteria, do desafio anterior, acrescente uma tabela com os horários de
+funcionamento, copiando da tabela
+Suba para o github.
 -->
 
 <!DOCTYPE html>
@@ -26,6 +31,47 @@ dados que serão exibidos, e na estrutura em HTML.
 
     <h2>Cardápio</h2>
     <p><em>Aviso:</em> ingredientes listados podem conter glúten e leite</p>
+
+    <section>
+  <h2>Horários de funcionamento</h2>
+
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Horarios</th>
+        <th>Segunda</th>
+        <th>Terça</th>
+        <th>Quarta</th>
+        <th>Quinta</th>
+        <th>Sexta</th>
+        <th>Sábado</th>
+        <th>Domingos e <br /> Feriados</th>
+      </tr>
+    </thead>
+
+    <tbody style="text-align: center;">
+      <tr>
+        <th>Manhã</th>
+        <td>08:00<br />12:00</td>
+        <td rowspan="2">Fechado</td>
+        <td>08:00<br />12:00</td>
+        <td>08:00<br />12:00</td>
+        <td>08:00<br />12:00</td>
+        <td>08:00<br />12:00</td>
+        <td rowspan="2">08:00<br />12:00</td>
+      </tr>
+
+      <tr>
+        <th>Tarde</th>
+        <td>14:00<br />18:00</td>
+        <td>14:00<br />18:00</td>
+        <td>14:00<br />18:00</td>
+        <td>14:00<br />18:00</td>
+        <td>14:00<br />18:00</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
     <section>
         <h2>Bebidas</h2>
