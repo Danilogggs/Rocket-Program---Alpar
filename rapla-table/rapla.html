@@ -1,0 +1,83 @@
+<!-- 
+
+Crie uma página de um site de uma empresa, real ou fictícia, utilizando tabelas para definir
+o layout.
+Não aplique o layout em tabelas nos outros sites já feitos, tenha paciência!
+Conecte com o seu portifólio e suba para o github. 
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rapla tech</title>
+  <link rel="stylesheet" href="assets/css.css">
+</head>
+
+<body>
+  <table class="layout">
+    <tr>
+      <td class="header" colspan="2">
+        <h1>Rapla tech</h1>
+        <p>Sites e automações</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </td>
+
+      <td class="content">
+        <h2 id="servicos">Serviços</h2>
+
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Serviço</th>
+              <th>Prazo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Site institucional</td>
+              <td>7 - 14 dias</td>
+            </tr>
+            <tr>
+              <td>Sistema web</td>
+              <td>20 - 45 dias</td>
+            </tr>
+            <tr>
+              <td>Automação / Integração</td>
+              <td>5 - 20 dias</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="sobre">Sobre</h2>
+        <p>Empresa fictícia focada em entregar soluções simples e bem feitas.</p>
+
+        <h2 id="contato">Contato</h2>
+        <table class="tabela tabela-pequena">
+          <tr>
+            <td><b>Email</b></td>
+            <td>rapla@gmail.com</td>
+          </tr>
+          <tr>
+            <td><b>Cidade</b></td>
+            <td>Curitiba - PR</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

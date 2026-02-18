@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #222;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+img {
+  display: block;
+  margin: 0 auto 16px;
+  border-radius: 10px;
+  width: 200px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+h2 {
+  text-align: center;
+  font-weight: normal;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+a {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Sublinhado dos links */
+a:hover {
+  text-decoration: underline;
+}
+
+/* Deixa a linha da divisão mais fina */
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 24px 0;
+}
+
+/* Retira as bolinhas */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+}
+
+/* Adiciona um "espaço" de fundo */
+li {
+  background: #f6f6f6;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+

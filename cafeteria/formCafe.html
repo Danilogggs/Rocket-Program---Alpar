@@ -19,14 +19,15 @@ Depois de criar a página, conecte-a com o seu portfólio e suba para o GitHub.
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contato - Café com Gatos</title>
 </head>
-
+<link rel="stylesheet" href="assets/cssForm.css">
 <body>
   <header>
     <h1>Contato - Café com Gatos</h1>
   </header>
 
   <main>
-    <form action="#" method="post">
+    <!-- Enviando form sem dados -->
+    <form onsubmit="window.location.href='./cafeteria.html'; return false;">
       <div>
         <label for="nome">Nome Completo *</label><br />
         <input type="text" id="nome" name="nome" required />
