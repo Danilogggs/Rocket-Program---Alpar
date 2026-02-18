@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+/* Links */
+a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Tabela título principal */
+.layout {
+    width: 100%;
+    border: 0;
+    border-collapse: collapse;
+}
+
+/* Header */
+.header {
+    background: #111111;
+    padding: 18px;
+}
+
+.header h1,
+.header p {
+    color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    vertical-align: top;
+    background: #f2f2f2;
+    padding: 14px;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.sidebar li {
+    margin: 8px 0;
+}
+
+.content {
+    padding: 12px;
+}
+
+.content h2 {
+    margin: 14px 0 8px;
+}
+
+.content p {
+    margin-bottom: 10px;
+}
+
+/* Tabelas internas */
+.tabela {
+    width: 100%;
+    max-width: 520px;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+}
+
+.tabela th,
+.tabela td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Tabela contato */
+.tabela-pequena {
+    max-width: 420px;
+}
