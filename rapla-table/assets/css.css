@@ -1,147 +1,154 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f6f6f6;
-    color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f6f6;
+  color: #111;
 }
 
 /* NAVBAR fixo */
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #111;
-    color: #fff;
-    padding: 14px 18px;
-    z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  padding: 14px 18px;
+  z-index: 999;
 }
 
 .navbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap; /* quebra em telas menores */
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .brand h1 {
-    font-size: 20px;
-    margin-bottom: 4px;
+  font-size: 20px;
 }
 
 .brand p {
-    font-size: 12px;
-    opacity: 0.85;
+  font-size: 12px;
+  opacity: 0.85;
 }
 
 .nav-links {
-    display: flex;
-    gap: 14px;
-    list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  list-style: none;
+  flex-wrap: wrap; /* não estoura */
 }
 
 .nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .nav-links a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Empurra o conteúdo pra baixo do navbar */
 .page {
-    display: flex;
-    gap: 18px;
-    padding: 110px 18px 18px;
+  display: flex;              
+  align-items: flex-start;    /* topo alinhado */
+  gap: 18px;
+  padding: 110px 18px 18px;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 220px;
-    background: #fff;
-    padding: 16px;
-    border-radius: 10px;
+  width: 220px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+
+  display: flex;             
+  flex-direction: column;
+  gap: 10px;
 }
 
 .sidebar h3 {
-    margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .sidebar ul {
-    list-style: none;
-    display: grid;
-    gap: 10px;
+  list-style: none;
+
+  display: flex;             
+  flex-direction: column;
+  gap: 10px;
 }
 
 .sidebar a {
-    text-decoration: none;
-    color: #111;
+  text-decoration: none;
+  color: #111;
 }
 
 .sidebar a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .content {
-    flex: 1;
-    background: #fff;
-    padding: 18px;
-    border-radius: 10px;
+  flex: 1;
+  background: #fff;
+  padding: 18px;
+  border-radius: 10px;
+
+  display: flex;             
+  flex-direction: column;
+  gap: 14px;
 }
 
 .content h2 {
-    margin: 18px 0 10px;
+  margin: 10px 0 6px;
 }
 
 .cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(160px, 1fr));
-    gap: 12px;
-    margin-top: 10px;
+  display: flex;              
+  flex-wrap: wrap;            /* quebra linha */
+  gap: 12px;
 }
 
 .card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 12px;
-    background: #fafafa;
+  flex: 1 1 160px;            /* cresce, encolhe, base 160px */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
+
+  display: flex;             
+  flex-direction: column;
+  gap: 8px;
 }
 
 .card h3 {
-    margin-bottom: 8px;
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .contato-box {
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 12px;
-    background: #fafafa;
-}
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
 
-@media (max-width: 900px) {
-    .page {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .navbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  display: flex;             
+  flex-direction: column;
+  gap: 8px;
 }
