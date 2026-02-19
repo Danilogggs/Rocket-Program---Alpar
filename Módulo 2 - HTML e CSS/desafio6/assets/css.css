@@ -15,16 +15,18 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   perspective: 1000px;
+
   width: 200px;
   height: 300px;
 }
 
+/* “miolo” que gira */
 .card3d{
   width: 100%;
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.3s;
+  transition: transform 0.6s;
 }
 
 .box:hover .card3d{
@@ -33,15 +35,69 @@ body {
 
 .face{
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-}
-
-.front{
-  transform: rotateY(180deg);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .back{
-    border-radius: 3%;
+  background: white;
+  transform: rotateY(0deg);
+}
+
+.back{
+  transform: rotateY(180deg);
+  object-fit: cover;
+}
+
+.corner{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 40px;
+}
+
+.tl{ /* top-left */
+  top: 10px;
+  left: 10px;
+}
+
+.br{ /* botton-right */
+  right: 10px;
+  bottom: 10px;
+  transform: rotate(180deg);
+}
+
+.rank{ /* numero */
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 700;
+  color: #111;
+}
+
+.pip.small{
+  width: 18px;
+  height: 18px;
+}
+
+.pip.mid{
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pip.mid.top{
+  top: 85px;
+}
+
+.pip.mid.bottom{
+  bottom: 85px;
+  transform: translateX(-50%) rotate(180deg);
 }
