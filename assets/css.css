@@ -9,16 +9,24 @@ body {
   background: #ffffff;
   color: #222;
   line-height: 1.6;
+
   max-width: 800px;
   margin: 40px auto;
   padding: 0 16px;
+
+  animation: fadeUp 2s ease-in-out;
 }
 
 img {
   display: block;
   margin: 0 auto 16px;
   border-radius: 10px;
+
   width: 200px;
+  max-width: 100%;
+  height: auto;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 h1 {
@@ -33,37 +41,55 @@ h2 {
   margin-bottom: 16px;
 }
 
+.divider {
+  position: relative;
+  margin: 50px 0;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid #ddd;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
 p {
   text-align: center;
   margin-bottom: 16px;
 }
 
 a {
-  color: #1a73e8;
+  color: #001e46;
   text-decoration: none;
   font-weight: 600;
+  opacity: 0.5;
+  transition: opacity 0.2s;
 }
 
-/* Sublinhado dos links */
 a:hover {
   text-decoration: underline;
+  opacity: 1;
 }
 
-/* Deixa a linha da divisão mais fina */
 hr {
   border: none;
   border-top: 1px solid #ddd;
   margin: 24px 0;
 }
 
-/* Retira as bolinhas */
 ul {
   list-style: none;
   padding: 0;
   margin-top: 12px;
 }
 
-/* Adiciona um "espaço" de fundo */
 li {
   background: #f6f6f6;
   border: 1px solid #e6e6e6;
@@ -78,3 +104,46 @@ li a {
   gap: 10px;
 }
 
+/* mobile' */
+@media screen and (max-width: 768px) {
+  body {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  img {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  .divider {
+    margin: 30px 0;
+  }
+
+  li {
+    padding: 12px;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
