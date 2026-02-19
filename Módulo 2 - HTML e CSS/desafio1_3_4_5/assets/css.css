@@ -12,6 +12,8 @@ body {
   max-width: 800px;
   margin: 40px auto;
   padding: 0 16px;
+  animation: fadeUp 2s ease-in-out;
+
 }
 
 img {
@@ -101,3 +103,13 @@ li a {
   gap: 10px;
 }
 
+@keyframes fadeUp{
+  from{
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
