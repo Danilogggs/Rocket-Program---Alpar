@@ -25,13 +25,13 @@ body {
     text-align: center;
 }
 
-.avatar {
+.imagem {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #111;
-    margin: 0 auto 12px;
+    border: 2px solid #111;
+    margin: 0 auto 7px;
     display: block;
 }
 
