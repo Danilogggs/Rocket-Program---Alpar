@@ -34,6 +34,25 @@ h2 {
   margin-bottom: 16px;
 }
 
+.divider{
+  position: relative;
+  margin: 50px;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider::before{ /* pseudo-elemento, criando o rotacionado ao meio*/
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid #ddd;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
 p {
   text-align: center;
   margin-bottom: 16px;
