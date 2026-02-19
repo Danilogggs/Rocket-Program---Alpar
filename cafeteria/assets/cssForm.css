@@ -1,59 +1,85 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 0 12px;
-    color: #222;
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 0 12px;
+  color: #222;
+
+  /* fundo cinza suave */
+  background: #f2f2f2;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 18px;
+  text-align: center;
+  margin-bottom: 18px;
 }
 
+/* form como “cartão” */
 form {
-    border: 1px solid #ddd;
-    padding: 16px;
-    border-radius: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
+/* espaçamento entre campos */
 label {
-    font-weight: 600;
+  font-weight: 600;
+  display: block;
+  margin-top: 12px;
 }
 
 input,
 textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font: inherit;
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+  background: #fafafa;
+}
+
+/* destaque quando clicar no campo */
+input:focus,
+textarea:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.18);
+  background: #fff;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    border: 0;
-    border-radius: 8px;
-    background: #1a73e8;
-    color: #fff;
-    font-weight: 700;
-    cursor: pointer;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #1a73e8;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
 }
 
 button:hover {
-    opacity: .9;
+  opacity: 0.95;
+}
+
+button:active {
+  transform: scale(0.99);
 }
 
 p {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #555;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
 }
