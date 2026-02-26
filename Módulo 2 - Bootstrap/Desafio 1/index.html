@@ -1,0 +1,149 @@
+<!--
+Desafio 1
+Bootstrap
+Objetivo: Criar uma landing page simples com 3 seções (hero, serviços e rodapé).
+Requisitos:
+ Use o container para controlar o layout.
+ Organize as seções usando row e col.
+ Cada seção deve se adaptar a diferentes tamanhos de tela (col-sm, col-md, col-
+lg).
+ A seção “serviços” deve apresentar 3 opções.
+ O conteúdo da seção de “serviços” deve exibir 1, 2 ou 3 colunas dependendo do
+tamanho da tela.
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body class="min-vh-100 d-flex flex-column">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <!-- 
+        navbar-expand-lg permite que o itens apareçam caso a tela for grande o suficiente, caso contrário, so apareceram no Menu
+        bg-light cor da navbar 
+        -->
+        <div class="container">
+            <!--
+            container centraliza o conteúdo e limita a largura, com padding nas laterais
+            -->
+            <a class="navbar-brand" href="#">Big Motors</a>
+            <!--
+            navbar-brand estiliza o texto
+            -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--
+            navbar-toggler aplica o estilo padrão do Bootstrap pro botão (tamanho, borda, alinhamento)
+            data-bs-toggle="collapse" esse botão vai controlar um colapso (abrir/fechar)
+            data-bs-target="#menu" define qual elemento será aberto/fechado (pegar por ID)
+            class="navbar-toggler-icon" desenha o ícone do hambúrguer
+            -->
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#carros">Carros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+                </ul>
+            </div>
+            <!--
+            collapse deixa esse bloco escondido no mobile e abrível/fechável pelo botão (toggler)
+            navbar-collapse aplica o comportamento/estilo padrão do Bootstrap para a área de links dentro da navbar
+            navbar-nav transforma a <ul> em um menu de navegação no estilo Bootstrap (lista vertical no mobile e alinhada na navbar quando expandida)
+            ms-auto joga o menu para a direita
+            nav-item marca cada <li> como um item do menu (estrutura padrão da navbar)
+            nav-link estiliza o <a> como link de navbar
+            -->
+        </div>
+    </nav>
+
+    <section id="hero" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-12 col-md-7 col-lg-8">
+                    <h1 class="fw-bold">Encontre seu próximo carro com segurança</h1>
+                    <p class="lead">
+                        Seminovos revisados, procedência e atendimento rápido.
+                    </p>
+                    <a class="btn btn-primary" href="#servicos">Ver serviços</a>
+                </div>
+
+                <div class="col-sm-12 col-md-5 col-lg-4 mt-3 mt-md-0">
+                    <div class="p-4 border rounded">
+                        <h5 class="mb-2">Contato rápido</h5>
+                        <p class="mb-0">Chame no WhatsApp e receba opções.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h2 class="fw-bold">Serviços</h2>
+                    <p class="mb-0">O que precisa?</p>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <!--
+            row cria o GRID e g-3 é o gap de espaçamento    
+            -->
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <!--
+                 1 coluna no sm, 2 no md, 3 no lg, OU SEJA, conforme a tela for diminuindo, o itens da direita vão se alinhando na primeiro coluna
+                 -->
+                    <div class="p-4 border rounded bg-white h-100">
+                        <h5>Carros revisados</h5>
+                        <p class="mb-0">Vistoria e revisão básica antes da entrega.</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="p-4 border rounded bg-white h-100">
+                        <h5>Financiamento</h5>
+                        <p class="mb-0">Simulação de parcelas e condições.</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="p-4 border rounded bg-white h-100">
+                        <h5>Avaliação do usado</h5>
+                        <p class="mb-0">Envie dados do seu carro para troca.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="footer" class="mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <strong>Big Motors</strong>
+                    <p class="mb-0">Carros com procedência e atendimento rápido.</p>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6 mt-3 mt-md-0 text-md-end">
+                    <p class="mb-0">Contato: (41) 99999-9999</p>
+                    <p class="mb-0">&copy; 2026</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
