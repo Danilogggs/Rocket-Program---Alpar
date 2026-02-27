@@ -127,10 +127,10 @@ body {
 }
 
 .pip.mid.top{
-  top: 85px;
+  top: 50px;
 }
 
 .pip.mid.bottom{
-  bottom: 85px;
+  bottom: 50px;
   transform: translateX(-50%) rotate(180deg);
 }
