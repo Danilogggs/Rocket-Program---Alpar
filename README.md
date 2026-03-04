@@ -22,8 +22,12 @@ e boas práticas de **JavaScript para Web**, além de criar interfaces responsiv
 ## 🛠️ Como rodar projetos (padrão)
 Todos projetos rodam direto no navegador:
 
+De forma direta ->
 1. Baixe/clone o repositório
 2. Abra o arquivo `index.html` no navegador ou use uma extensão tipo **Live Server** no VS Code.
+
+Pelo Git ->
+1. Basta acessar o link https://danilogggs.github.io/Rocket-Program---Alpar/
 
 ---
 
