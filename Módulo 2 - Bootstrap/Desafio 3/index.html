@@ -1,0 +1,61 @@
+<!-- Desafio 3 Bootstrap Objetivo: Crie uma tabela de usuários que mostre o ID, Nome, Email, Cargo e Opções de editar, deletar e visualizar o usuário.
+Requisitos: 
+ Use classes como table, table-striped, table-bordered e table-hover.
+ Responsividade com table-responsive. 
+ Coloque um cabeçalho com thead-dark ou thead-light. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Tabela de Usuários</title>
+</head>
+
+<body class="min-vh-100 d-flex align-items-center justify-content-center m-0">
+  <div class="container py-4">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover align-middle text-center">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Cargo</th>
+            <th scope="col">Opções</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Danilo</td>
+            <td>danilo@gmail.com</td>
+            <td>Dep. Federal</td>
+            <td class="d-flex gap-2 justify-content-center">
+              <button class="btn btn-sm btn-primary">Visualizar</button>
+              <button class="btn btn-sm btn-warning">Editar</button>
+              <button class="btn btn-sm btn-danger">Deletar</button>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">2</th>
+            <td>Maria</td>
+            <td>maria@gmail.com</td>
+            <td>Gerente</td>
+            <td class="d-flex gap-2 justify-content-center">
+              <button class="btn btn-sm btn-primary">Visualizar</button>
+              <button class="btn btn-sm btn-warning">Editar</button>
+              <button class="btn btn-sm btn-danger">Deletar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

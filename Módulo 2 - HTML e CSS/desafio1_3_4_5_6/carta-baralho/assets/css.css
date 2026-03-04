@@ -22,7 +22,7 @@ body {
 
 .texto{
   position: absolute;
-  top: 30%;
+  top: 23%;
   left: 50%;
   transform: translate(-50%, -50%);
   animation: neon 2s linear infinite;
@@ -127,10 +127,10 @@ body {
 }
 
 .pip.mid.top{
-  top: 85px;
+  top: 50px;
 }
 
 .pip.mid.bottom{
-  bottom: 85px;
+  bottom: 50px;
   transform: translateX(-50%) rotate(180deg);
 }
