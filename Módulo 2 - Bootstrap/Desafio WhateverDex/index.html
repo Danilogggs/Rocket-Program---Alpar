@@ -1,0 +1,441 @@
+<!-- 
+Nos idos dos anos 1990 fomos (eu fui, vocês não rs) pegos pela febre Pokémon! Bichinhos lutando em arenas para conseguir insígnias e se tornar o maior mestre Pokémon do mundo! Ash Ketchum nos ensinou sobre perseverança e alcançar nossos sonhos e objetivos, e nos mostrou também que os pokémons que ele capturava eram armazenados em um dispositivo criado pelo Professor Carvalho, chamado Pokédex.
+ 
+Então significa que vocês montarão uma Pokédex? Não! Vocês montarão uma "WhateverDex"
+ 
+O que é uma WhaateverDex? Um dispositivo de armazenamento, DO QUE VOCÊ QUISER! Você pode criar uma Dex inspirada nos monstrinhos do Ben 10, magias e potions de D&D, armamentos disponíveis em MapleStory, ou até mesmo a discografia de uma banda!
+ 
+Embora os exemplos aqui sejam mais voltados a jogos, a criatividade está liberada! Mas existem algumas coisas que vocês precisam se atentar, que são obrigatórias:
+ 
+- Precisa ter uma lista de cards
+- A interface visual precisa ser organizada
+- Precisa ter uma busca ou filtro
+- Detalhes precisam poder ser visualizados
+- Cada item precisa ter pelo menos: nome, imagem, descrição. Demais elementos devem ser orientados de acordo com a dex de vocês (por exemplo: se eu escolho fazer uma dex de batons, posso colocar como um elemento do card a marca do batom)
+- MÍNIMO DE 10 ITENS
+ 
+Utilizem o que vocês aprenderam sobre HTML, CSS, JS para Web e Bootstrap para realizar o desafio. 
+Esse projeto deverá ser entregue dia 10/03
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuteDex</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+    <nav id="mainNavbar" class="navbar navbar-expand-lg bg-light border-bottom">
+        <div class="container">
+            <a class="navbar-brand" href="#">FuteDex</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <button type="button"
+                            class="nav-link btn btn-link text-decoration-none d-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#modalConfig">
+                            <i class="bi bi-gear"></i>
+                            <span id="configNavText">Configurações</span>
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <form id="searchForm" class="nav-link d-flex align-items-center gap-2" role="search">
+                            <input id="searchInput" class="form-control me-2" type="search"
+                                placeholder="Ex: Corinthians" aria-label="Pesquisar">
+                            <button id="searchButton" class="btn btn-outline-secondary" type="submit">Pesquisar</button>
+                        </form>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="nav-link d-flex align-items-center gap-2">
+                            <button id="fillTeamsBtn" class="btn btn-outline-secondary" type="button">
+                                Mostrar todos os times
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="modalConfig" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div id="configModalContent" class="modal-content">
+                <div class="modal-header">
+                    <h5 id="configModalTitle" class="modal-title">Configurações</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body d-flex flex-column gap-3">
+                    <div class="form-check form-switch d-flex justify-content-between align-items-center">
+                        <label class="form-check-label" for="darkModeSwitch">Dark mode</label>
+                        <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span id="languageLabel">Idioma</span>
+                        <button id="languageToggleBtn" type="button" class="btn btn-outline-primary btn-sm">
+                            English
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container py-4">
+        <div id="teamsList" class="row g-4"></div>
+
+        <div class="text-center mt-4">
+            <button id="loadMoreButton" class="btn btn-primary">
+                Carregar mais
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const teamsList = document.getElementById("teamsList");
+        const loadMoreButton = document.getElementById("loadMoreButton");
+        const fillTeamsBtn = document.getElementById("fillTeamsBtn");
+        const searchForm = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const searchButton = document.getElementById("searchButton");
+        const darkModeSwitch = document.getElementById("darkModeSwitch");
+        const mainNavbar = document.getElementById("mainNavbar");
+        const configModalContent = document.getElementById("configModalContent");
+        const languageToggleBtn = document.getElementById("languageToggleBtn");
+        const configNavText = document.getElementById("configNavText");
+        const configModalTitle = document.getElementById("configModalTitle");
+        const languageLabel = document.getElementById("languageLabel");
+
+        let allTeams = [];
+        let displayedCount = 0;
+        const itemsPerClick = 12;
+        let currentLanguage = "pt";
+
+        const translations = {
+            pt: {
+                configNav: "Configurações",
+                configTitle: "Configurações",
+                darkMode: "Dark mode",
+                language: "Idioma",
+                languageButton: "English",
+                searchPlaceholder: "Ex: Corinthians",
+                searchAria: "Pesquisar",
+                searchButton: "Pesquisar",
+                showAll: "Mostrar todos os times",
+                loadMore: "Carregar mais",
+                loadError: "Não foi possível carregar os times.",
+                noResults: "Nenhum time encontrado.",
+                name: "Nome",
+                country: "País",
+                code: "Código",
+                founded: "Fundado em",
+                national: "Seleção nacional",
+                yes: "Sim",
+                no: "Não",
+                stadium: "Estádio",
+                city: "Cidade",
+                capacity: "Capacidade",
+                surface: "Superfície",
+                notProvided: "Não informado"
+            },
+            en: {
+                configNav: "Settings",
+                configTitle: "Settings",
+                darkMode: "Dark mode",
+                language: "Language",
+                languageButton: "Português",
+                searchPlaceholder: "Ex: Corinthians",
+                searchAria: "Search",
+                searchButton: "Search",
+                showAll: "Show all teams",
+                loadMore: "Load more",
+                loadError: "Could not load teams.",
+                noResults: "No teams found.",
+                name: "Name",
+                country: "Country",
+                code: "Code",
+                founded: "Founded in",
+                national: "National team",
+                yes: "Yes",
+                no: "No",
+                stadium: "Stadium",
+                city: "City",
+                capacity: "Capacity",
+                surface: "Surface",
+                notProvided: "Not informed"
+            }
+        };
+
+        function getText() {
+            return translations[currentLanguage];
+        }
+
+        function updateStaticTexts() {
+            const text = getText();
+
+            document.documentElement.lang = currentLanguage === "pt" ? "pt-BR" : "en";
+            configNavText.textContent = text.configNav;
+            configModalTitle.textContent = text.configTitle;
+            document.querySelector('label[for="darkModeSwitch"]').textContent = text.darkMode;
+            languageLabel.textContent = text.language;
+            languageToggleBtn.textContent = text.languageButton;
+            searchInput.placeholder = text.searchPlaceholder;
+            searchInput.setAttribute("aria-label", text.searchAria);
+            searchButton.textContent = text.searchButton;
+            fillTeamsBtn.textContent = text.showAll;
+            loadMoreButton.textContent = text.loadMore;
+        }
+
+        async function loadTeams() {
+            const url = "https://v3.football.api-sports.io/teams?country=Brazil";
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "x-apisports-key": "0a5712cc37d4f9bbbe73fd668db56602"
+                    }
+                });
+
+                const data = await response.json();
+                allTeams = data.response;
+                showMoreTeams();
+            } catch (error) {
+                console.error("Error loading teams:", error);
+                teamsList.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            ${getText().loadError}
+                        </div>
+                    </div>
+                `;
+                loadMoreButton.style.display = "none";
+            }
+        }
+
+        function createTeamCard(item, index) {
+            const team = item.team;
+            const venue = item.venue;
+            const text = getText();
+
+            const modalId = `modal-${team.id}-${index}`;
+
+            const card = document.createElement("div");
+            card.className = "col-12 col-md-6 col-lg-4";
+
+            card.innerHTML = `
+                <div class="card h-100 text-center shadow-sm team-card" role="button"
+                    data-bs-toggle="modal" data-bs-target="#${modalId}"
+                    style="cursor: pointer;">
+                    <div class="card-body">
+                        <img src="${team.logo}" alt="${team.name}" class="img-fluid mb-3 rounded" style="max-height: 120px; object-fit: contain;">
+                        <h5 class="card-title">${team.name}</h5>
+                        <p class="card-text">${venue.city}</p>
+                    </div>
+                </div>
+
+                <div class="modal fade team-modal" id="${modalId}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${team.name}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="${team.logo}" alt="${team.name}" class="img-fluid mb-3" style="max-height: 120px; object-fit: contain;">
+                                <p><strong>${text.name}:</strong> ${team.name}</p>
+                                <p><strong>${text.country}:</strong> ${team.country || text.notProvided}</p>
+                                <p><strong>${text.code}:</strong> ${team.code || text.notProvided}</p>
+                                <p><strong>${text.founded}:</strong> ${team.founded || text.notProvided}</p>
+                                <p><strong>${text.national}:</strong> ${team.national ? text.yes : text.no}</p>
+                                <hr>
+                                <p><strong>${text.stadium}:</strong> ${venue.name || text.notProvided}</p>
+                                <p><strong>${text.city}:</strong> ${venue.city || text.notProvided}</p>
+                                <p><strong>${text.capacity}:</strong> ${venue.capacity || text.notProvided}</p>
+                                <p><strong>${text.surface}:</strong> ${venue.surface || text.notProvided}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function showMoreTeams() {
+            const nextTeams = allTeams.slice(displayedCount, displayedCount + itemsPerClick);
+
+            nextTeams.forEach((item, index) => {
+                const card = createTeamCard(item, displayedCount + index);
+                teamsList.appendChild(card);
+            });
+
+            displayedCount += nextTeams.length;
+
+            if (displayedCount >= allTeams.length) {
+                loadMoreButton.style.display = "none";
+            } else {
+                loadMoreButton.style.display = "inline-block";
+            }
+
+            applyDarkMode();
+        }
+
+        function applyDarkMode() {
+            const isDark = darkModeSwitch.checked;
+            const cards = document.querySelectorAll(".team-card");
+            const teamModals = document.querySelectorAll(".team-modal .modal-content");
+
+            if (isDark) {
+                document.body.classList.add("bg-dark", "text-light");
+
+                mainNavbar.classList.remove("bg-light");
+                mainNavbar.classList.add("bg-dark", "navbar-dark", "border-secondary");
+
+                configModalContent.classList.add("bg-dark", "text-light");
+
+                cards.forEach(card => {
+                    card.classList.add("bg-secondary", "text-light", "border-secondary");
+                });
+
+                teamModals.forEach(modal => {
+                    modal.classList.add("bg-dark", "text-light");
+                });
+
+                loadMoreButton.classList.remove("btn-primary");
+                loadMoreButton.classList.add("btn-outline-light");
+            } else {
+                document.body.classList.remove("bg-dark", "text-light");
+
+                mainNavbar.classList.remove("bg-dark", "navbar-dark", "border-secondary");
+                mainNavbar.classList.add("bg-light");
+
+                configModalContent.classList.remove("bg-dark", "text-light");
+
+                cards.forEach(card => {
+                    card.classList.remove("bg-secondary", "text-light", "border-secondary");
+                });
+
+                teamModals.forEach(modal => {
+                    modal.classList.remove("bg-dark", "text-light");
+                });
+
+                loadMoreButton.classList.remove("btn-outline-light");
+                loadMoreButton.classList.add("btn-primary");
+            }
+        }
+
+        function rerenderTeams() {
+            const searchedTerm = searchInput.value.trim().toLowerCase();
+            teamsList.innerHTML = "";
+
+            if (searchedTerm !== "") {
+                const filteredTeams = allTeams.filter(item =>
+                    item.team.name.toLowerCase().includes(searchedTerm)
+                );
+
+                if (filteredTeams.length === 0) {
+                    teamsList.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-warning text-center">
+                                ${getText().noResults}
+                            </div>
+                        </div>
+                    `;
+                    loadMoreButton.style.display = "none";
+                    return;
+                }
+
+                filteredTeams.forEach((item, index) => {
+                    const card = createTeamCard(item, index);
+                    teamsList.appendChild(card);
+                });
+
+                loadMoreButton.style.display = "none";
+                applyDarkMode();
+                return;
+            }
+
+            displayedCount = 0;
+            showMoreTeams();
+        }
+
+        fillTeamsBtn.addEventListener("click", function () {
+            searchInput.value = "";
+            teamsList.innerHTML = "";
+            displayedCount = 0;
+            showMoreTeams();
+        });
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const searchedTerm = searchInput.value.trim().toLowerCase();
+
+            if (searchedTerm === "") {
+                teamsList.innerHTML = "";
+                displayedCount = 0;
+                showMoreTeams();
+                return;
+            }
+
+            const filteredTeams = allTeams.filter(item =>
+                item.team.name.toLowerCase().includes(searchedTerm)
+            );
+
+            teamsList.innerHTML = "";
+
+            if (filteredTeams.length === 0) {
+                teamsList.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-warning text-center">
+                            ${getText().noResults}
+                        </div>
+                    </div>
+                `;
+                loadMoreButton.style.display = "none";
+                return;
+            }
+
+            filteredTeams.forEach((item, index) => {
+                const card = createTeamCard(item, index);
+                teamsList.appendChild(card);
+            });
+
+            loadMoreButton.style.display = "none";
+            applyDarkMode();
+        });
+
+        loadMoreButton.addEventListener("click", showMoreTeams);
+
+        darkModeSwitch.addEventListener("change", applyDarkMode);
+
+        languageToggleBtn.addEventListener("click", function () {
+            currentLanguage = currentLanguage === "pt" ? "en" : "pt";
+            updateStaticTexts();
+            rerenderTeams();
+        });
+
+        updateStaticTexts();
+        loadTeams();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
