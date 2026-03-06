@@ -25,6 +25,10 @@ Todos projetos rodam direto no navegador:
 1. Baixe/clone o repositório
 2. Abra o arquivo `index.html` no navegador ou use uma extensão tipo **Live Server** no VS Code.
 
+Pelo GitHub ->
+
+1. Basta acessar o link https://danilogggs.github.io/Rocket-Program---Alpar/
+
 ---
 
 ## 📫 Contato
