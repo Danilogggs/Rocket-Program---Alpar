@@ -1,0 +1,13 @@
+.comodo {
+  height: 150px;
+  border: 1px solid #000;
+  background-color: #777;
+  color: white;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.aceso {
+  background-color: yellow;
+  color: black;
+}
