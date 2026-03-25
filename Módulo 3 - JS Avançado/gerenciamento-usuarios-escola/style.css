@@ -1,13 +1,65 @@
 body {
-  background-color: #121212;
+    background: linear-gradient(180deg, #050505 0%, #0d0d0d 100%);
+    font-family: Arial, sans-serif;
 }
 
-.card {
-  border: 1px solid #2c2c2c;
-  border-radius: 12px;
+.app-card {
+    max-width: 700px;
+    background: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.45);
 }
 
-img {
-  background-color: #ffffff;
-  padding: 10px;
+.custom-input {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    min-height: 48px;
+}
+
+.custom-input:focus {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border-color: #7a7a7a;
+    box-shadow: none;
+}
+
+.custom-input::placeholder {
+    color: #9a9a9a;
+}
+
+.form-select option {
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+.tab-btn {
+    min-height: 46px;
+    border-radius: 10px;
+}
+
+.feedback-text {
+    color: #d6d6d6;
+    min-height: 24px;
+}
+
+.user-box {
+    background-color: #1d1d1d;
+    border: 1px solid #2e2e2e;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.user-image {
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 14px;
+}
+
+.bg-dark-subtle-custom {
+    background-color: #1c1c1c;
+    border-color: #333 !important;
+    min-height: 220px;
 }
