@@ -1,0 +1,76 @@
+body {
+    background: linear-gradient(180deg, #050505 0%, #0d0d0d 100%);
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.app-card {
+    background: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 22px;
+}
+
+.custom-input {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid #3a3a3a;
+    border-radius: 12px;
+    min-height: 48px;
+}
+
+.custom-input:focus {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border-color: #7a7a7a;
+    box-shadow: none;
+}
+
+.custom-input::placeholder {
+    color: #9a9a9a;
+}
+
+.form-select option {
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+.tab-btn {
+    min-height: 46px;
+    border-radius: 12px;
+}
+
+.feedback-text {
+    color: #d6d6d6;
+    min-height: 24px;
+}
+
+.user-box,
+.user-list-card,
+.box-dark,
+.mini-box,
+.student-item {
+    background-color: #1b1b1b;
+    border: 1px solid #2f2f2f;
+}
+
+.user-box {
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.user-list-card {
+    border-radius: 16px;
+}
+
+.box-dark {
+    border-radius: 18px;
+}
+
+.mini-box {
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.student-item {
+    border-radius: 16px;
+}

@@ -1,0 +1,396 @@
+<!--
+Agora que já temos o AngularJS rodando, vamos trabalhar com escopos aninhados e
+aplicar filtros diretamente na visualização.
+Objetivo:
+Listar vários usuários na tela, filtrá-los por tipo (Aluno ou Professor) e exibir dados
+formatados com filtros.
+Requisitos:
+No seu AppController, crie um array chamado usuarios, contendo pelo menos 5 objetos
+com as propriedades:
+ nome
+ tipo ("Aluno" ou "Professor")
+ dataCadastro (use new Date())
+Mostre todos os usuários na tela usando ng-repeat.
+Acima da lista, adicione um campo de busca com ng-model="filtro"
+e filtre os usuários em tempo real com | filter:filtro.
+Adicione outro campo ng-model="filtroTipo" para filtrar por tipo (Aluno ou Professor).
+Use | filter:{ tipo: filtroTipo }.
+Use filtros AngularJS para:
+Mostrar o nome com uppercase
+Mostrar dataCadastro com date:'dd/MM/yyyy'
+Separe a lista em um ng-controller diferente e veja como os escopos funcionam.
+Mostre o total de alunos e professores com {{ (usuarios | filter:{tipo:'Aluno'}).length }}
+
+-->
+ <!DOCTYPE html>
+<html lang="en" ng-app="appEscolar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Escolar</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-controller="AppController">
+
+    <div class="container py-5">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-9">
+                <div class="card app-card shadow-lg">
+
+                    <div class="card-body p-4 p-md-5" ng-if="!logado">
+                        <h1 class="text-center text-light fw-bold mb-2">Sistema Escolar</h1>
+
+                        <ul class="nav nav-pills mb-4 row g-2">
+                            <li class="col-6">
+                                <button type="button" class="btn w-100 tab-btn"
+                                    ng-class="aba === 'login' ? 'btn-light text-dark fw-semibold' : 'btn-outline-light'"
+                                    ng-click="trocarAba('login')">
+                                    Login
+                                </button>
+                            </li>
+                            <li class="col-6">
+                                <button type="button" class="btn w-100 tab-btn"
+                                    ng-class="aba === 'cadastro' ? 'btn-light text-dark fw-semibold' : 'btn-outline-light'"
+                                    ng-click="trocarAba('cadastro')">
+                                    Cadastro
+                                </button>
+                            </li>
+                        </ul>
+
+                        <form ng-if="aba === 'login'" ng-submit="fazerLogin()">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Nome</label>
+                                    <input type="text" class="form-control custom-input" ng-model="login.nome" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Tipo</label>
+                                    <select class="form-select custom-input" ng-model="login.tipo" required>
+                                        <option value="">Selecione</option>
+                                        <option value="Aluno">Aluno</option>
+                                        <option value="Professor">Professor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-light text-dark w-100 fw-semibold mt-4">
+                                Entrar
+                            </button>
+                        </form>
+
+                        <form ng-if="aba === 'cadastro'" ng-submit="cadastrarUsuario()">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Nome</label>
+                                    <input type="text" class="form-control custom-input" ng-model="cadastro.nome" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Tipo</label>
+                                    <select class="form-select custom-input"
+                                        ng-model="cadastro.tipo"
+                                        ng-change="aoAlterarTipoCadastro()"
+                                        required>
+                                        <option value="">Selecione</option>
+                                        <option value="Aluno">Aluno</option>
+                                        <option value="Professor">Professor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mt-4" ng-if="cadastro.tipo === 'Professor'">
+                                <label class="form-label text-light d-block mb-3">
+                                    Selecione quais matérias irá lecionar:
+                                </label>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="box-dark p-3 h-100 rounded-4 border">
+                                            <h5 class="text-light text-center mb-3">Disponíveis</h5>
+
+                                            <button type="button"
+                                                class="btn btn-outline-light w-100 mb-2"
+                                                ng-repeat="materia in materiasDisponiveisCadastro track by materia.valor"
+                                                ng-click="selecionarMateriaCadastro(materia)">
+                                                {{ materia.nome }}
+                                            </button>
+
+                                            <p class="text-secondary text-center mb-0"
+                                                ng-if="materiasDisponiveisCadastro.length === 0">
+                                                Nenhuma disponível
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="box-dark p-3 h-100 rounded-4 border">
+                                            <h5 class="text-light text-center mb-3">Já selecionadas</h5>
+
+                                            <button type="button"
+                                                class="btn btn-light text-dark w-100 mb-2"
+                                                ng-repeat="materia in materiasSelecionadasCadastro track by materia.valor"
+                                                ng-click="removerMateriaCadastro(materia)">
+                                                {{ materia.nome }}
+                                            </button>
+
+                                            <p class="text-secondary text-center mb-0"
+                                                ng-if="materiasSelecionadasCadastro.length === 0">
+                                                Nenhuma selecionada
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4" ng-if="cadastro.tipo === 'Aluno'">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-light">Professor</label>
+                                        <select class="form-select custom-input"
+                                            ng-model="cadastro.professorNome"
+                                            ng-change="atualizarMateriaAlunoPorProfessor()"
+                                            required>
+                                            <option value="">Selecione</option>
+                                            <option ng-repeat="professor in obterProfessoresDisponiveisCadastro() track by professor.nome"
+                                                value="{{ professor.nome }}">
+                                                {{ professor.nome }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-light">Matéria</label>
+                                        <select class="form-select custom-input"
+                                            ng-model="cadastro.materiaAluno"
+                                            ng-change="atualizarProfessorPorMateria()"
+                                            required>
+                                            <option value="">Selecione</option>
+                                            <option ng-repeat="materia in obterMateriasDisponiveisAluno() track by materia"
+                                                value="{{ materia }}">
+                                                {{ materia }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-light w-100 fw-semibold mt-4">
+                                Cadastrar
+                            </button>
+                        </form>
+
+                        <p class="text-center mt-4 mb-0 feedback-text">{{ retorno }}</p>
+
+                        <div class="mt-5 pt-4 border-top border-secondary-subtle" ng-controller="ListaUsuariosController">
+                            <h3 class="text-light fw-bold mb-3">Usuários cadastrados</h3>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Buscar por nome ou qualquer campo</label>
+                                    <input type="text" class="form-control custom-input" ng-model="filtro" placeholder="Digite para filtrar">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-light">Filtrar por tipo</label>
+                                    <select class="form-select custom-input" ng-model="filtroTipo">
+                                        <option value="">Todos</option>
+                                        <option value="Aluno">Aluno</option>
+                                        <option value="Professor">Professor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <div class="mini-box">
+                                        <span class="d-block text-secondary">Total de alunos</span>
+                                        <strong class="text-light fs-4">
+                                            {{ (usuarios | filter:{tipo:'Aluno'}).length }}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mini-box">
+                                        <span class="d-block text-secondary">Total de professores</span>
+                                        <strong class="text-light fs-4">
+                                            {{ (usuarios | filter:{tipo:'Professor'}).length }}
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12"
+                                    ng-repeat="usuarioItem in usuarios | filter:filtro | filter:{ tipo: filtroTipo } track by $index">
+                                    <div class="user-list-card p-3 rounded-4">
+                                        <div class="row g-3 align-items-center">
+                                            <div class="col-md-4">
+                                                <p class="mb-1 text-secondary small">Nome</p>
+                                                <p class="mb-0 text-light fw-semibold">
+                                                    {{ usuarioItem.nome | uppercase }}
+                                                </p>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <p class="mb-1 text-secondary small">Tipo</p>
+                                                <p class="mb-0 text-light">
+                                                    {{ usuarioItem.tipo }}
+                                                </p>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <p class="mb-1 text-secondary small">Cadastro</p>
+                                                <p class="mb-0 text-light">
+                                                    {{ usuarioItem.dataCadastro | date:'dd/MM/yyyy' }}
+                                                </p>
+                                            </div>
+
+                                            <div class="col-md-2 text-md-end">
+                                                <span class="badge text-bg-light" ng-if="usuarioItem.tipo === 'Professor'">
+                                                    Professor
+                                                </span>
+                                                <span class="badge text-bg-secondary" ng-if="usuarioItem.tipo === 'Aluno'">
+                                                    Aluno
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3" ng-if="usuarioItem.tipo === 'Professor'">
+                                            <p class="mb-1 text-secondary small">Matérias</p>
+                                            <span class="badge text-bg-light me-2 mb-2"
+                                                ng-repeat="materia in usuarioItem.materiasNomes track by $index">
+                                                {{ materia }}
+                                            </span>
+                                        </div>
+
+                                        <div class="mt-3" ng-if="usuarioItem.tipo === 'Aluno'">
+                                            <p class="mb-1 text-secondary small">Professor</p>
+                                            <p class="mb-2 text-light">{{ usuarioItem.professorNome || 'Não informado' }}</p>
+
+                                            <p class="mb-1 text-secondary small">Matéria</p>
+                                            <p class="mb-0 text-light">{{ usuarioItem.materia || 'Não informada' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4 p-md-5 text-center" ng-if="logado">
+                        <h2 class="text-light fw-bold mb-2">Área do usuário</h2>
+                        <p class="text-secondary mb-4">Bem-vindo ao sistema</p>
+
+                        <div class="user-box mb-4 text-start">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <p class="mb-1 text-secondary small">Nome</p>
+                                    <p class="mb-0 text-light fw-semibold">{{ usuario.nome }}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p class="mb-1 text-secondary small">Tipo</p>
+                                    <p class="mb-0 text-light">{{ usuario.tipo }}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p class="mb-1 text-secondary small">Cadastro</p>
+                                    <p class="mb-0 text-light">{{ usuario.dataCadastro | date:'dd/MM/yyyy' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4" ng-if="usuario.tipo === 'Aluno'">
+                                <p class="mb-1 text-secondary small">Professor registrado</p>
+                                <p class="mb-2 text-light">{{ usuario.professorNome }}</p>
+
+                                <p class="mb-1 text-secondary small">Matéria registrada</p>
+                                <p class="mb-0 text-light">{{ usuario.materia }}</p>
+                            </div>
+                        </div>
+
+                        <div ng-if="usuario.tipo === 'Professor'">
+                            <ul class="nav nav-pills mb-4 row g-2">
+                                <li class="col-6">
+                                    <button type="button"
+                                        class="btn w-100"
+                                        ng-class="abaProfessor === 'materias' ? 'btn-light text-dark fw-semibold' : 'btn-outline-light'"
+                                        ng-click="abaProfessor = 'materias'">
+                                        Minhas matérias
+                                    </button>
+                                </li>
+                                <li class="col-6">
+                                    <button type="button"
+                                        class="btn w-100"
+                                        ng-class="abaProfessor === 'alunos' ? 'btn-light text-dark fw-semibold' : 'btn-outline-light'"
+                                        ng-click="abaProfessor = 'alunos'">
+                                        Alunos registrados
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="box-dark p-4 rounded-4 border text-start" ng-if="abaProfessor === 'materias'">
+                                <h4 class="text-light mb-3">Matérias do professor</h4>
+
+                                <span class="badge text-bg-light me-2 mb-2"
+                                    ng-repeat="materia in usuario.materiasNomes track by $index">
+                                    {{ materia }}
+                                </span>
+
+                                <p class="text-secondary mb-0" ng-if="usuario.materiasNomes.length === 0">
+                                    Nenhuma matéria cadastrada.
+                                </p>
+                            </div>
+
+                            <div class="box-dark p-4 rounded-4 border text-start" ng-if="abaProfessor === 'alunos'">
+                                <h4 class="text-light mb-3">Alunos das suas matérias</h4>
+
+                                <div class="student-item rounded-4 p-3 mb-3"
+                                    ng-repeat="aluno in obterAlunosDoProfessorLogado() track by $index">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <p class="mb-1 text-secondary small">Aluno</p>
+                                            <p class="mb-0 text-light fw-semibold">{{ aluno.nome }}</p>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <p class="mb-1 text-secondary small">Matéria</p>
+                                            <p class="mb-0 text-light">{{ aluno.materia }}</p>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <p class="mb-1 text-secondary small">Cadastro</p>
+                                            <p class="mb-0 text-light">{{ aluno.dataCadastro | date:'dd/MM/yyyy' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-secondary mb-0" ng-if="obterAlunosDoProfessorLogado().length === 0">
+                                    Nenhum aluno registrado nas suas matérias.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-outline-light px-4 fw-semibold mt-4" ng-click="logout()">
+                            Logout
+                        </button>
+
+                        <p class="text-center mt-4 mb-0 feedback-text">{{ retorno }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
