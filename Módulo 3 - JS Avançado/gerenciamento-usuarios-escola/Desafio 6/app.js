@@ -3,35 +3,35 @@ angular.module("appEscolar", [])
     .service("UsuarioService", function () {
         var usuarios = [
             {
-                nome: "Marina",
+                nome: "Ruffo",
                 tipo: "Professor",
                 dataCadastro: new Date(),
                 materias: ["ang", "rec"],
                 materiasNomes: ["Angular", "React"]
             },
             {
-                nome: "Carlos",
+                nome: "Lima",
                 tipo: "Professor",
                 dataCadastro: new Date(),
                 materias: ["sn"],
                 materiasNomes: ["ServiceNow"]
             },
             {
-                nome: "Bianca",
+                nome: "Thais",
                 tipo: "Aluno",
                 dataCadastro: new Date(),
                 professorNome: "Marina",
                 materia: "Angular"
             },
             {
-                nome: "Lucas",
+                nome: "Cintia",
                 tipo: "Aluno",
                 dataCadastro: new Date(),
                 professorNome: "Carlos",
                 materia: "ServiceNow"
             },
             {
-                nome: "Fernanda",
+                nome: "Teste",
                 tipo: "Aluno",
                 dataCadastro: new Date(),
                 professorNome: "Marina",
