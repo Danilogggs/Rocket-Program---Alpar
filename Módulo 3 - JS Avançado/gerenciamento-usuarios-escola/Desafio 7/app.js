@@ -1,0 +1,367 @@
+angular.module("appEscolar", [])
+
+    .service("UsuarioService", function ($q, $timeout) {
+        var usuarios = [
+            {
+                nome: "Ruffo",
+                email: "ruffo@email.com",
+                tipo: "Professor",
+                dataCadastro: new Date(),
+                materias: ["ang", "rec"],
+                materiasNomes: ["Angular", "React"]
+            },
+            {
+                nome: "Lima",
+                email: "lima@email.com",
+                tipo: "Professor",
+                dataCadastro: new Date(),
+                materias: ["sn"],
+                materiasNomes: ["ServiceNow"]
+            },
+            {
+                nome: "Thais",
+                email: "thais@email.com",
+                tipo: "Aluno",
+                dataCadastro: new Date(),
+                professorNome: "Marina",
+                materia: "Angular"
+            },
+            {
+                nome: "Cintia",
+                email: "cintia@email.com",
+                tipo: "Aluno",
+                dataCadastro: new Date(),
+                professorNome: "Carlos",
+                materia: "ServiceNow"
+            },
+            {
+                nome: "Teste",
+                email: "teste@email.com",
+                tipo: "Aluno",
+                dataCadastro: new Date(),
+                professorNome: "Marina",
+                materia: "React"
+            }
+        ];
+
+        this.listar = function () {
+            return usuarios;
+        };
+
+        this.adicionar = function (usuario) {
+            usuarios.push(usuario);
+        };
+
+        this.salvar = function (usuario) {
+            var deferred = $q.defer();
+
+            $timeout(function () {
+                var emailJaExiste = usuarios.some(function (item) {
+                    return item.email &&
+                        usuario.email &&
+                        item.email.toLowerCase() === usuario.email.toLowerCase();
+                });
+
+                if (emailJaExiste) {
+                    deferred.reject("Já existe um usuário cadastrado com esse e-mail.");
+                    return;
+                }
+
+                usuarios.push(usuario);
+                deferred.resolve("Usuário cadastrado com sucesso.");
+            }, 2000);
+
+            return deferred.promise;
+        };
+
+        this.remover = function (index) {
+            usuarios.splice(index, 1);
+        };
+    })
+
+    .controller("AppController", function ($scope, UsuarioService) {
+        $scope.mensagem = "Bem-vindo ao sistema de cadastro escolar";
+
+        $scope.aba = "login";
+        $scope.abaProfessor = "materias";
+        $scope.logado = false;
+        $scope.retorno = "";
+        $scope.salvando = false;
+
+        $scope.usuarios = UsuarioService.listar();
+
+        $scope.login = {
+            nome: "",
+            tipo: ""
+        };
+
+        $scope.cadastro = {
+            nome: "",
+            email: "",
+            tipo: "",
+            materias: [],
+            materiasNomes: [],
+            professorNome: "",
+            materiaAluno: ""
+        };
+
+        $scope.usuario = {};
+
+        $scope.catalogoMaterias = [
+            { valor: "sn", nome: "ServiceNow" },
+            { valor: "ang", nome: "Angular" },
+            { valor: "rec", nome: "React" }
+        ];
+
+        $scope.materiasDisponiveisCadastro = angular.copy($scope.catalogoMaterias);
+        $scope.materiasSelecionadasCadastro = [];
+
+        $scope.limparFormularioLogin = function () {
+            $scope.login = {
+                nome: "",
+                tipo: ""
+            };
+        };
+
+        $scope.limparFormularioCadastro = function (formulario) {
+            $scope.cadastro = {
+                nome: "",
+                email: "",
+                tipo: "",
+                materias: [],
+                materiasNomes: [],
+                professorNome: "",
+                materiaAluno: ""
+            };
+
+            $scope.materiasDisponiveisCadastro = angular.copy($scope.catalogoMaterias);
+            $scope.materiasSelecionadasCadastro = [];
+
+            if (formulario) {
+                formulario.$setPristine();
+                formulario.$setUntouched();
+            }
+        };
+
+        $scope.trocarAba = function (novaAba, formularioCadastro) {
+            $scope.aba = novaAba;
+            $scope.retorno = "";
+            $scope.limparFormularioLogin();
+            $scope.limparFormularioCadastro(formularioCadastro);
+        };
+
+        $scope.aoAlterarTipoCadastro = function () {
+            $scope.cadastro.materias = [];
+            $scope.cadastro.materiasNomes = [];
+            $scope.cadastro.professorNome = "";
+            $scope.cadastro.materiaAluno = "";
+
+            $scope.materiasDisponiveisCadastro = angular.copy($scope.catalogoMaterias);
+            $scope.materiasSelecionadasCadastro = [];
+        };
+
+        $scope.selecionarMateriaCadastro = function (materia) {
+            var indice = $scope.materiasDisponiveisCadastro.indexOf(materia);
+
+            if (indice !== -1) {
+                $scope.materiasSelecionadasCadastro.push(materia);
+                $scope.materiasDisponiveisCadastro.splice(indice, 1);
+            }
+
+            $scope.cadastro.materias = $scope.materiasSelecionadasCadastro.map(function (item) {
+                return item.valor;
+            });
+
+            $scope.cadastro.materiasNomes = $scope.materiasSelecionadasCadastro.map(function (item) {
+                return item.nome;
+            });
+        };
+
+        $scope.removerMateriaCadastro = function (materia) {
+            var indice = $scope.materiasSelecionadasCadastro.indexOf(materia);
+
+            if (indice !== -1) {
+                $scope.materiasDisponiveisCadastro.push(materia);
+                $scope.materiasSelecionadasCadastro.splice(indice, 1);
+            }
+
+            $scope.cadastro.materias = $scope.materiasSelecionadasCadastro.map(function (item) {
+                return item.valor;
+            });
+
+            $scope.cadastro.materiasNomes = $scope.materiasSelecionadasCadastro.map(function (item) {
+                return item.nome;
+            });
+        };
+
+        $scope.obterProfessores = function () {
+            return $scope.usuarios.filter(function (usuario) {
+                return usuario.tipo === "Professor";
+            });
+        };
+
+        $scope.obterProfessoresDisponiveisCadastro = function () {
+            var professores = $scope.obterProfessores();
+
+            if ($scope.cadastro.materiaAluno) {
+                professores = professores.filter(function (professor) {
+                    return (professor.materiasNomes || []).indexOf($scope.cadastro.materiaAluno) !== -1;
+                });
+            }
+
+            return professores;
+        };
+
+        $scope.obterMateriasDisponiveisAluno = function () {
+            if ($scope.cadastro.professorNome) {
+                var professorEscolhido = $scope.usuarios.find(function (usuario) {
+                    return usuario.tipo === "Professor" && usuario.nome === $scope.cadastro.professorNome;
+                });
+
+                return professorEscolhido ? angular.copy(professorEscolhido.materiasNomes || []) : [];
+            }
+
+            var materiasUnicas = [];
+
+            $scope.obterProfessores().forEach(function (professor) {
+                (professor.materiasNomes || []).forEach(function (materia) {
+                    if (materiasUnicas.indexOf(materia) === -1) {
+                        materiasUnicas.push(materia);
+                    }
+                });
+            });
+
+            if ($scope.cadastro.materiaAluno) {
+                return materiasUnicas.filter(function (materia) {
+                    return materia === $scope.cadastro.materiaAluno;
+                });
+            }
+
+            return materiasUnicas;
+        };
+
+        $scope.atualizarMateriaAlunoPorProfessor = function () {
+            var materiasDisponiveis = $scope.obterMateriasDisponiveisAluno();
+
+            if (materiasDisponiveis.indexOf($scope.cadastro.materiaAluno) === -1) {
+                $scope.cadastro.materiaAluno = "";
+            }
+        };
+
+        $scope.atualizarProfessorPorMateria = function () {
+            var professoresDisponiveis = $scope.obterProfessoresDisponiveisCadastro().map(function (professor) {
+                return professor.nome;
+            });
+
+            if (professoresDisponiveis.indexOf($scope.cadastro.professorNome) === -1) {
+                $scope.cadastro.professorNome = "";
+            }
+        };
+
+        $scope.cadastrarUsuario = function (formularioCadastro) {
+            $scope.retorno = "";
+
+            if (formularioCadastro.$invalid) {
+                formularioCadastro.$setTouched();
+                return;
+            }
+
+            if ($scope.cadastro.tipo === "Professor" && $scope.cadastro.materias.length === 0) {
+                $scope.retorno = "Selecione pelo menos uma matéria para o professor.";
+                return;
+            }
+
+            if ($scope.cadastro.tipo === "Aluno" && (!$scope.cadastro.professorNome || !$scope.cadastro.materiaAluno)) {
+                $scope.retorno = "Selecione o professor e a matéria do aluno.";
+                return;
+            }
+
+            var novoUsuario = {
+                nome: $scope.cadastro.nome,
+                email: $scope.cadastro.email,
+                tipo: $scope.cadastro.tipo,
+                dataCadastro: new Date()
+            };
+
+            if ($scope.cadastro.tipo === "Professor") {
+                novoUsuario.materias = angular.copy($scope.cadastro.materias);
+                novoUsuario.materiasNomes = angular.copy($scope.cadastro.materiasNomes);
+            }
+
+            if ($scope.cadastro.tipo === "Aluno") {
+                novoUsuario.professorNome = $scope.cadastro.professorNome;
+                novoUsuario.materia = $scope.cadastro.materiaAluno;
+            }
+
+            $scope.salvando = true;
+
+            UsuarioService.salvar(novoUsuario)
+                .then(function (mensagem) {
+                    $scope.retorno = mensagem;
+                    $scope.aba = "login";
+                    $scope.limparFormularioCadastro(formularioCadastro);
+                    $scope.limparFormularioLogin();
+                })
+                .catch(function (erro) {
+                    $scope.retorno = erro;
+                })
+                .finally(function () {
+                    $scope.salvando = false;
+                });
+        };
+
+        $scope.fazerLogin = function () {
+            var usuarioEncontrado = $scope.usuarios.find(function (usuario) {
+                return usuario.nome === $scope.login.nome &&
+                    usuario.tipo === $scope.login.tipo;
+            });
+
+            if (usuarioEncontrado) {
+                $scope.usuario = usuarioEncontrado;
+                $scope.logado = true;
+                $scope.abaProfessor = "materias";
+                $scope.retorno = "";
+                $scope.limparFormularioLogin();
+            } else {
+                $scope.retorno = "Usuário não encontrado.";
+            }
+        };
+
+        $scope.removerUsuario = function (index) {
+            var usuarioRemovido = $scope.usuarios[index];
+
+            if ($scope.logado && usuarioRemovido === $scope.usuario) {
+                $scope.logout();
+            }
+
+            UsuarioService.remover(index);
+        };
+
+        $scope.obterAlunosDoProfessorLogado = function () {
+            if (!$scope.usuario || $scope.usuario.tipo !== "Professor") {
+                return [];
+            }
+
+            return $scope.usuarios.filter(function (usuario) {
+                return usuario.tipo === "Aluno" &&
+                    usuario.professorNome === $scope.usuario.nome &&
+                    ($scope.usuario.materiasNomes || []).indexOf(usuario.materia) !== -1;
+            });
+        };
+
+        $scope.logout = function () {
+            $scope.logado = false;
+            $scope.usuario = {};
+            $scope.retorno = "";
+            $scope.aba = "login";
+            $scope.abaProfessor = "materias";
+            $scope.limparFormularioLogin();
+            $scope.limparFormularioCadastro();
+        };
+    })
+
+    .controller("ListaUsuariosController", function ($scope) {
+        $scope.filtro = "";
+        $scope.filtroTipo = "";
+        $scope.mostrarUsuarios = false;
+    });

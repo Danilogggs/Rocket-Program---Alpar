@@ -1,0 +1,943 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    color: #14213d;
+}
+
+
+.scene {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    transition: 0.9s ease;
+    --sky-top: #79c9ff;
+    --sky-bottom: #eef9ff;
+    --sun: #ffd45b;
+    --cloud: rgba(255, 255, 255, 0.95);
+    --mountain-1: #8ba7c6;
+    --mountain-2: #7a96b7;
+    --mountain-3: #96b1cf;
+    --ground: #72bd63;
+    --road: #7c6a64;
+    --house: #f6eadf;
+    --roof: #be6a57;
+    --window: #fff0a6;
+    --door: #88584a;
+    --tree: #5ca24b;
+    --tree-shadow: #4b843d;
+    --skin: #f5c8a7;
+    --cloth-1: #5a8b58;
+    --cloth-2: #d88a4c;
+    --leg: #3f414a;
+    --shadow: rgba(20, 33, 61, 0.14);
+}
+
+.scene::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 75%);
+    transition: 0.9s ease;
+}
+
+.scene.frio {
+    --sky-top: #8fa8bf;
+    --sky-bottom: #eef5fb;
+    --sun: #f4fbff;
+    --cloud: rgba(237, 244, 251, 0.96);
+    --mountain-1: #8c9fb3;
+    --mountain-2: #778ca3;
+    --mountain-3: #9ab0c5;
+    --ground: #dceaf0;
+    --road: #8e8f99;
+    --house: #f1f3f7;
+    --roof: #7185a3;
+    --window: #ffeaa4;
+    --door: #6b7386;
+    --tree: #c8d9e6;
+    --tree-shadow: #a8bfd0;
+    --cloth-1: #5372b5;
+    --cloth-2: #8b67b6;
+    --leg: #353846;
+}
+
+.scene.ameno {
+    --sky-top: #79c9ff;
+    --sky-bottom: #eef9ff;
+    --sun: #ffd45b;
+    --cloud: rgba(255, 255, 255, 0.95);
+    --mountain-1: #8ba7c6;
+    --mountain-2: #7a96b7;
+    --mountain-3: #96b1cf;
+    --ground: #72bd63;
+    --road: #7c6a64;
+    --house: #f6eadf;
+    --roof: #be6a57;
+    --window: #fff0a6;
+    --door: #88584a;
+    --tree: #5ca24b;
+    --tree-shadow: #4b843d;
+    --cloth-1: #5a8b58;
+    --cloth-2: #d88a4c;
+    --leg: #3f414a;
+}
+
+.scene.quente {
+    --sky-top: #ffb45c;
+    --sky-bottom: #fff3bf;
+    --sun: #ff9a2a;
+    --cloud: rgba(255, 245, 221, 0.95);
+    --mountain-1: #d89a65;
+    --mountain-2: #c17d4f;
+    --mountain-3: #e7b582;
+    --ground: #c8c85d;
+    --road: #8c6e57;
+    --house: #fff1e3;
+    --roof: #d6654a;
+    --window: #fff6c9;
+    --door: #9a654c;
+    --tree: #7cb04d;
+    --tree-shadow: #5e8938;
+    --cloth-1: #ef7a56;
+    --cloth-2: #f2c14e;
+    --leg: #3e3633;
+}
+
+.weather-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: 0.8s ease;
+    opacity: 0;
+}
+
+.scene.frio .weather-layer {
+    opacity: 0.7;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1.5px, transparent 2.5px);
+    background-size: 130px 130px, 180px 180px;
+    animation: snowFall 14s linear infinite;
+}
+
+.scene.ameno .weather-layer {
+    opacity: 0.18;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 45%);
+}
+
+.scene.quente .weather-layer {
+    opacity: 0.32;
+    background: linear-gradient(120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.15) 45%,
+            transparent 65%);
+    animation: heatWave 6s ease-in-out infinite;
+}
+
+.sun {
+    position: absolute;
+    top: 70px;
+    right: 90px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--sun);
+    box-shadow:
+        0 0 0 18px rgba(255, 255, 255, 0.12),
+        0 0 45px rgba(255, 195, 82, 0.45);
+    transition: 0.9s ease;
+    z-index: 1;
+}
+
+.scene.frio .sun {
+    top: 90px;
+    width: 95px;
+    height: 95px;
+    box-shadow:
+        0 0 0 14px rgba(255, 255, 255, 0.18),
+        0 0 30px rgba(255, 255, 255, 0.25);
+}
+
+.scene.quente .sun {
+    top: 50px;
+    width: 145px;
+    height: 145px;
+    box-shadow:
+        0 0 0 22px rgba(255, 226, 141, 0.18),
+        0 0 65px rgba(255, 153, 42, 0.52);
+}
+
+.cloud {
+    position: absolute;
+    height: 34px;
+    border-radius: 40px;
+    background: var(--cloud);
+    opacity: 0.95;
+    transition: 0.9s ease;
+    animation: cloudMove 28s linear infinite;
+    z-index: 2;
+}
+
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: var(--cloud);
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 42px;
+    height: 42px;
+    left: 18px;
+    top: -16px;
+}
+
+.cloud::after {
+    width: 54px;
+    height: 54px;
+    right: 14px;
+    top: -22px;
+}
+
+.cloud-1 {
+    width: 130px;
+    top: 120px;
+    left: 10%;
+}
+
+.cloud-2 {
+    width: 110px;
+    top: 180px;
+    left: 52%;
+    animation-duration: 34s;
+}
+
+.cloud-3 {
+    width: 120px;
+    top: 95px;
+    left: 72%;
+    animation-duration: 24s;
+}
+
+.mountain {
+    position: absolute;
+    bottom: 165px;
+    width: 320px;
+    height: 320px;
+    transform: rotate(45deg);
+    border-radius: 28px;
+    transition: 0.9s ease;
+    z-index: 3;
+}
+
+.mountain-1 {
+    left: -20px;
+    background: var(--mountain-1);
+}
+
+.mountain-2 {
+    left: 22%;
+    width: 380px;
+    height: 380px;
+    background: var(--mountain-2);
+}
+
+.mountain-3 {
+    right: 4%;
+    width: 300px;
+    height: 300px;
+    background: var(--mountain-3);
+}
+
+.ground {
+    position: absolute;
+    left: -8%;
+    bottom: -18px;
+    width: 116%;
+    height: 250px;
+    background: var(--ground);
+    border-radius: 50% 50% 0 0 / 18% 18% 0 0;
+    transition: 0.9s ease;
+    z-index: 4;
+}
+
+.road {
+    position: absolute;
+    bottom: 32px;
+    left: 18%;
+    width: 64%;
+    height: 72px;
+    background: var(--road);
+    border-radius: 60px;
+    transform: rotate(-2deg);
+    transition: 0.9s ease;
+    z-index: 5;
+}
+
+.house {
+    position: absolute;
+    bottom: 112px;
+    width: 160px;
+    height: 112px;
+    background: var(--house);
+    border-radius: 14px;
+    box-shadow: 0 14px 30px var(--shadow);
+    transition: 0.9s ease;
+    z-index: 7;
+}
+
+.house-1 {
+    left: 12%;
+}
+
+.house-2 {
+    right: 16%;
+    width: 175px;
+}
+
+.roof {
+    position: absolute;
+    top: -24px;
+    left: -8%;
+    width: 116%;
+    height: 46px;
+    background: var(--roof);
+    border-radius: 14px;
+    transform: skewX(-12deg);
+    transition: 0.9s ease;
+}
+
+.chimney {
+    position: absolute;
+    top: -50px;
+    right: 26px;
+    width: 18px;
+    height: 44px;
+    background: #8d6559;
+    border-radius: 6px 6px 0 0;
+}
+
+.smoke {
+    position: absolute;
+    top: -88px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    opacity: 0.2;
+    transition: 0.9s ease;
+}
+
+.smoke::before,
+.smoke::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.smoke::before {
+    width: 14px;
+    height: 14px;
+    left: -10px;
+    top: -10px;
+}
+
+.smoke::after {
+    width: 22px;
+    height: 22px;
+    right: -12px;
+    top: -24px;
+}
+
+.scene.frio .smoke,
+.scene.ameno .smoke {
+    animation: smokeRise 5s ease-in-out infinite;
+}
+
+.scene.frio .smoke {
+    opacity: 0.95;
+}
+
+.scene.ameno .smoke {
+    opacity: 0.38;
+}
+
+.scene.quente .smoke {
+    opacity: 0;
+}
+
+.window,
+.door {
+    position: absolute;
+    border-radius: 10px;
+    transition: 0.9s ease;
+}
+
+.window {
+    width: 28px;
+    height: 28px;
+    top: 32px;
+    background: var(--window);
+}
+
+.window-1 {
+    left: 26px;
+}
+
+.window-2 {
+    right: 26px;
+}
+
+.scene.frio .window {
+    box-shadow: 0 0 12px rgba(255, 240, 166, 0.7);
+}
+
+.door {
+    width: 34px;
+    height: 54px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--door);
+    border-radius: 12px 12px 0 0;
+}
+
+.tree {
+    position: absolute;
+    bottom: 115px;
+    width: 80px;
+    height: 140px;
+    z-index: 7;
+}
+
+.tree-1 {
+    left: 34%;
+}
+
+.tree-2 {
+    right: 34%;
+}
+
+.trunk {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    width: 20px;
+    height: 50px;
+    background: #8f5f45;
+    border-radius: 8px;
+}
+
+.crown {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    width: 72px;
+    height: 86px;
+    background: var(--tree);
+    border-radius: 50%;
+    box-shadow:
+        -16px 12px 0 0 var(--tree-shadow),
+        16px 12px 0 0 var(--tree);
+    transition: 0.9s ease;
+}
+
+.person {
+    position: absolute;
+    bottom: 92px;
+    width: 44px;
+    height: 112px;
+    z-index: 8;
+}
+
+.person-1 {
+    left: 42%;
+}
+
+.person-2 {
+    right: 30%;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--skin);
+    transition: 0.9s ease;
+}
+
+.body {
+    position: absolute;
+    top: 25px;
+    left: 8px;
+    width: 28px;
+    height: 48px;
+    border-radius: 12px 12px 8px 8px;
+    background: var(--cloth-1);
+    transition: 0.9s ease;
+}
+
+.person-2 .body {
+    background: var(--cloth-2);
+}
+
+.arm,
+.leg {
+    position: absolute;
+    border-radius: 10px;
+    transition: 0.9s ease;
+}
+
+.arm {
+    top: 32px;
+    width: 10px;
+    height: 34px;
+    background: var(--cloth-1);
+}
+
+.person-2 .arm {
+    background: var(--cloth-2);
+}
+
+.arm-left {
+    left: 1px;
+    transform: rotate(18deg);
+}
+
+.arm-right {
+    right: 1px;
+    transform: rotate(-18deg);
+}
+
+.leg {
+    top: 70px;
+    width: 10px;
+    height: 34px;
+    background: var(--leg);
+}
+
+.leg-left {
+    left: 10px;
+}
+
+.leg-right {
+    right: 10px;
+}
+
+
+.scene.frio .body {
+    height: 54px;
+}
+
+.scene.frio .arm {
+    height: 38px;
+    top: 34px;
+}
+
+.scene.frio .body::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: -2px;
+    width: 32px;
+    height: 10px;
+    border-radius: 999px;
+    background: #f4d7df;
+}
+
+.scene.frio .head::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -3px;
+    width: 34px;
+    height: 13px;
+    border-radius: 14px 14px 4px 4px;
+    background: #5a78c2;
+    box-shadow: 0 -8px 0 0 #5a78c2;
+}
+
+.scene.frio .person-2 .head::before {
+    background: #8b67b6;
+    box-shadow: 0 -8px 0 0 #8b67b6;
+}
+
+.scene.quente .body {
+    top: 30px;
+    height: 38px;
+    border-radius: 10px;
+}
+
+.scene.quente .arm {
+    top: 35px;
+    height: 28px;
+}
+
+.scene.quente .leg {
+    top: 63px;
+    height: 42px;
+}
+
+.scene.quente .head::after {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 5px;
+    width: 18px;
+    height: 5px;
+    border-radius: 999px;
+    background: #1f2630;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+
+.app-shell {
+    position: relative;
+    z-index: 20;
+    min-height: 100vh;
+}
+
+.weather-card {
+    margin-top: 24px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 28px;
+    padding: 28px;
+    box-shadow: 0 24px 70px rgba(20, 33, 61, 0.18);
+    backdrop-filter: blur(10px);
+}
+
+.weather-card h1 {
+    font-size: 3rem;
+    color: #14213d;
+}
+
+.subtitle {
+    color: #51627a;
+    font-size: 1.05rem;
+}
+
+.custom-input {
+    border-radius: 16px;
+    border: 1px solid #d6deea;
+    padding-left: 16px;
+    min-height: 58px;
+    box-shadow: none !important;
+}
+
+.custom-btn {
+    border-radius: 16px;
+    min-height: 58px;
+    font-weight: 700;
+}
+
+.loading-text {
+    color: #334155;
+}
+
+.error-text {
+    color: #dc3545;
+    font-size: 1.05rem;
+}
+
+.result-box {
+    border-top: 1px solid rgba(20, 33, 61, 0.08);
+    padding-top: 24px;
+}
+
+.village-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #14213d;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.city-title {
+    font-size: 1.9rem;
+    color: #14213d;
+}
+
+.village-desc {
+    color: #5b6b80;
+}
+
+.weather-icon {
+    width: 90px;
+    height: 90px;
+}
+
+.temp-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #14213d;
+}
+
+.weather-desc {
+    color: #58677a;
+    font-size: 1.05rem;
+}
+
+.mini-card {
+    background: rgba(20, 33, 61, 0.05);
+    border-radius: 18px;
+    padding: 16px 10px;
+    height: 100%;
+}
+
+.mini-card strong {
+    display: block;
+    margin-top: 6px;
+    color: #14213d;
+    font-size: 1.1rem;
+}
+
+.mini-label {
+    display: block;
+    color: #5b6b80;
+    font-size: 0.92rem;
+}
+
+.compact-result {
+    border-top: 1px solid rgba(20, 33, 61, 0.08);
+    padding-top: 20px;
+}
+
+.compact-icon {
+    width: 84px;
+    height: 84px;
+}
+
+.details-btn {
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-weight: 700;
+}
+
+.details-panel {
+    padding-top: 10px;
+}
+
+.city-title {
+    font-size: 2rem;
+    color: #14213d;
+}
+
+.temp-value {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #14213d;
+    line-height: 1;
+}
+
+
+@keyframes cloudMove {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(18px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes smokeRise {
+    0% {
+        transform: translateY(0) scale(0.85);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: translateY(-12px) scale(1);
+        opacity: 0.75;
+    }
+
+    100% {
+        transform: translateY(-28px) scale(1.15);
+        opacity: 0;
+    }
+}
+
+@keyframes snowFall {
+    0% {
+        background-position: 0 0, 0 0;
+    }
+
+    100% {
+        background-position: 0 420px, 0 320px;
+    }
+}
+
+@keyframes heatWave {
+    0% {
+        transform: translateX(-20px);
+    }
+
+    50% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        transform: translateX(-20px);
+    }
+}
+
+
+@media (max-width: 991px) {
+    .weather-card h1 {
+        font-size: 2.5rem;
+    }
+
+    .house-1 {
+        left: 5%;
+    }
+
+    .house-2 {
+        right: 6%;
+    }
+
+    .tree-1 {
+        left: 27%;
+    }
+
+    .tree-2 {
+        right: 24%;
+    }
+
+    .person-1 {
+        left: 38%;
+    }
+
+    .person-2 {
+        right: 24%;
+    }
+}
+
+@media (max-width: 767px) {
+    .weather-card {
+        margin-top: 24px;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.48);
+        border-radius: 28px;
+        padding: 24px 28px;
+        box-shadow: 0 24px 70px rgba(20, 33, 61, 0.18);
+        backdrop-filter: blur(10px);
+        max-width: 920px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .weather-card h1 {
+        font-size: 2.1rem;
+    }
+
+    .subtitle {
+        font-size: 0.98rem;
+    }
+
+    .sun {
+        right: 34px;
+        top: 55px;
+    }
+
+    .mountain {
+        bottom: 180px;
+    }
+
+    .house {
+        transform: scale(0.88);
+        transform-origin: bottom;
+    }
+
+    .tree {
+        transform: scale(0.85);
+        transform-origin: bottom;
+    }
+
+    .person {
+        transform: scale(0.82);
+        transform-origin: bottom;
+    }
+
+    .house-1 {
+        left: -2%;
+    }
+
+    .house-2 {
+        right: -3%;
+    }
+
+    .tree-1 {
+        left: 20%;
+    }
+
+    .tree-2 {
+        right: 14%;
+    }
+
+    .person-1 {
+        left: 35%;
+    }
+
+    .person-2 {
+        right: 18%;
+    }
+}
+
+@media (max-width: 575px) {
+    .weather-card h1 {
+        font-size: 1.9rem;
+    }
+
+    .temp-value {
+        font-size: 2.4rem;
+    }
+
+    .cloud-3 {
+        display: none;
+    }
+
+    .mountain-2 {
+        left: 10%;
+    }
+
+    .tree-2,
+    .person-2 {
+        display: none;
+    }
+
+    .road {
+        left: 8%;
+        width: 84%;
+    }
+
+    .house-2 {
+        right: -10%;
+    }
+
+    .tree-1 {
+        left: 15%;
+    }
+
+    .person-1 {
+        left: 46%;
+    }
+}
