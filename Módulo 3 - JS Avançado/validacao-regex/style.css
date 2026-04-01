@@ -1,0 +1,25 @@
+   body {
+       background-color: #f8f9fa;
+   }
+
+   .container-box {
+       max-width: 500px;
+       margin: 50px auto;
+       background: #fff;
+       padding: 24px;
+       border-radius: 12px;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+   }
+
+   .valido {
+       border: 2px solid #198754 !important;
+   }
+
+   .invalido {
+       border: 2px solid #dc3545 !important;
+   }
+
+   .mensagem {
+       font-size: 14px;
+       margin-top: 5px;
+   }
