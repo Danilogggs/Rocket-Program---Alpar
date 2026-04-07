@@ -1,0 +1,90 @@
+[
+  {
+    "nome": "teste",
+    "email": "teste@teste.teste",
+    "senha": "teste1",
+    "foto": "usersImg/1775500214004_podcast2.png",
+    "habitosPadrao": [
+      {
+        "nome": "Escovar os dentes",
+        "concluido": false
+      },
+      {
+        "nome": "Almocar",
+        "concluido": false
+      },
+      {
+        "nome": "teste3",
+        "concluido": false
+      },
+      {
+        "nome": "teste4",
+        "concluido": false
+      },
+      {
+        "nome": "teste5",
+        "concluido": false
+      },
+      {
+        "nome": "TESTE",
+        "concluido": false
+      },
+      {
+        "nome": "Arroz",
+        "concluido": false
+      },
+      {
+        "nome": "testaetaet",
+        "concluido": false
+      },
+      {
+        "nome": "aaaaaaaaa",
+        "concluido": false
+      },
+      {
+        "nome": "new",
+        "concluido": false
+      },
+      {
+        "nome": "roooo",
+        "concluido": false
+      },
+      {
+        "nome": "Teste1",
+        "concluido": false
+      },
+      {
+        "nome": "TEsto",
+        "concluido": false
+      },
+      {
+        "nome": "ASDASDsdASDASDASDASDASDAS",
+        "concluido": false
+      }
+    ],
+    "registrosDiarios": [
+      {
+        "id": "2026-04-30_1775566112116",
+        "data": "2026-04-30",
+        "humor": {
+          "nivelDoHumor": 4,
+          "observacao": "teste"
+        },
+        "habitos": [
+          {
+            "nome": "ASDASDsdASDASDASDASDASDAS",
+            "concluido": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "teste Dois",
+    "email": "teste43@teste.teste",
+    "senha": "teste2",
+    "foto": "usersImg/1775567358492_podcast2.png",
+    "habitosPadrao": [],
+    "registrosDiarios": []
+  }
+]

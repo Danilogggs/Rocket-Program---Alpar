@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTracker - Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body ng-controller="MenuController" ng-init="carregarUsuarioMenu()" ng-cloak>
+    <header class="topbar">
+        <a href="./home.html" class="topbar-brand">MoodTracker</a>
+
+        <div class="topbar-right">
+            <div class="menu-user-chip" ng-if="usuarioMenu">
+                <img ng-src="{{ getFotoUsuario() }}" alt="Foto do usuário" class="menu-avatar">
+                <div class="menu-user-text">
+                    <span class="menu-user-name">{{ usuarioMenu.nome }}</span>
+                    <span class="menu-user-email">{{ usuarioMenu.email }}</span>
+                </div>
+            </div>
+
+            <nav class="desktop-menu">
+                <a href="./dados-usuario.html">Dados do usuário</a>
+                <button type="button" ng-click="logout()">Logout</button>
+            </nav>
+
+            <div class="mobile-menu-wrapper">
+                <button class="burger-btn" type="button" ng-click="toggleMenu($event)" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="menu-dropdown-vertical" ng-class="{ active: menuAberto }"
+                    ng-click="$event.stopPropagation()">
+                    <div class="menu-mobile-user" ng-if="usuarioMenu">
+                        <img ng-src="{{ getFotoUsuario() }}" alt="Foto do usuário" class="menu-user-photo">
+                        <div class="menu-user-text">
+                            <span class="menu-user-name">{{ usuarioMenu.nome }}</span>
+                            <span class="menu-user-email">{{ usuarioMenu.email }}</span>
+                        </div>
+                    </div>
+                    <a href="./dados-usuario.html" ng-click="fecharMenu()">Dados do usuário</a>
+                    <button type="button" ng-click="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-wrapper" ng-controller="HomePageController">
+        <div class="container-dashboard mx-auto">
+            <div class="row justify-content-center g-4 mb-4">
+                <div class="col-12 col-xl-10">
+                    <div class="row g-4 align-items-stretch">
+                        <div class="col-12 col-lg-8">
+                            <div class="glass-card h-100">
+                                <div
+                                    class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                                    <div>
+                                        <h1 class="section-title mb-2">Seu painel diário</h1>
+                                        <p class="muted-small mb-0">Registre humor, hábitos e acompanhe sua evolução.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <div class="glass-card h-100">
+                                <div class="card-title-soft">Último registro</div>
+                                <div ng-if="resumo.ultimoRegistro">
+                                    <div class="emoji-big mb-2">
+                                        {{ resumo.ultimoRegistro.emojiHumor ||
+                                        getEmoji(resumo.ultimoRegistro.humor.nivelDoHumor) }}
+                                    </div>
+                                    <div class="fw-bold">{{ formatarData(resumo.ultimoRegistro.data) }}</div>
+                                    <div class="muted-small">
+                                        {{ resumo.ultimoRegistro.humor ? resumo.ultimoRegistro.humor.observacao || 'Sem
+                                        observação.' : 'Sem humor registrado.' }}
+                                    </div>
+                                </div>
+                                <div class="muted-small" ng-if="!resumo.ultimoRegistro">Nenhum registro ainda.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center g-4 mb-4">
+                <div class="col-12 col-xl-10">
+                    <div class="row g-4">
+                        <div class="col-6 col-lg-3">
+                            <div class="glass-card text-center h-100">
+                                <div class="summary-number">{{ resumo.totalRegistros || 0 }}</div>
+                                <div class="summary-label">Registros</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="glass-card text-center h-100">
+                                <div class="summary-number">{{ resumo.mediaHumor || 0 }}</div>
+                                <div class="summary-label">Média do humor</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="glass-card text-center h-100">
+                                <div class="summary-number">{{ resumo.habitosConcluidos || 0 }}</div>
+                                <div class="summary-label">Hábitos concluídos</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="glass-card text-center h-100">
+                                <div class="summary-number">{{ resumo.percentualHabitos || 0 }}%</div>
+                                <div class="summary-label">Progresso</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center g-4 mb-4">
+                <div class="col-12 col-xl-10">
+                    <div class="row g-4">
+                        <div class="col-12 col-lg-6">
+                            <div class="glass-card h-100">
+                                <div class="card-title-soft">Ações rápidas</div>
+                                <div class="quick-actions">
+                                    <div class="quick-card">
+                                        <div class="fw-bold mb-2">Registrar humor</div>
+                                        <div class="muted-small mb-3">Salve como você está se sentindo no dia.</div>
+                                        <button type="button" class="btn-soft-action w-100"
+                                            ng-click="abrirModalHumor()">Abrir modal</button>
+                                    </div>
+                                    <div class="quick-card">
+                                        <div class="fw-bold mb-2">Registrar hábitos</div>
+                                        <div class="muted-small mb-3">Marque hábitos concluídos e pendentes.</div>
+                                        <button type="button" class="btn-soft-action w-100"
+                                            ng-click="abrirModalHabitos()">Abrir modal</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="glass-card h-100">
+                                <div class="card-title-soft">Filtro rápido</div>
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-12">
+                                        <label class="form-label">Data do registro</label>
+                                        <input type="date" class="form-control" ng-model="filtros.data">
+                                    </div>
+                                    <div class="col-12 d-flex gap-2">
+                                        <button type="button" class="btn-soft-action flex-fill"
+                                            ng-click="aplicarFiltros()">Filtrar</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary flex-fill btn-outline-soft"
+                                            ng-click="limparFiltros()">Limpar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center g-4">
+                <div class="col-12 col-xl-10">
+                    <div class="glass-card">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+                            <div>
+                                <div class="card-title-soft mb-1">Lista de registros</div>
+                                <div class="muted-small">Data, humor, hábitos e observações registradas.</div>
+                            </div>
+                            <div class="muted-small">{{ registros.length }} resultado(s)</div>
+                        </div>
+
+                        <div class="empty-box" ng-if="!carregandoRegistros && !registros.length">
+                            Nenhum registro encontrado. Use os botões acima para registrar humor e hábitos.
+                        </div>
+
+                        <div class="row g-3" ng-if="registros.length">
+                            <div class="col-12 col-lg-6" ng-repeat="registro in registros track by registro.id">
+                                <div class="record-card">
+                                    <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                                        <div>
+                                            <div class="record-date">{{ formatarData(registro.data) }}</div>
+                                            <div class="muted-small">{{ registro.habitos.length || 0 }} hábito(s)
+                                                registrado(s)</div>
+                                        </div>
+
+                                        <div class="d-flex flex-column align-items-end gap-2">
+                                            <div class="text-end" ng-if="registro.humor">
+                                                <div class="emoji-big">{{ getEmoji(registro.humor.nivelDoHumor) }}</div>
+                                                <div class="muted-small">Nível {{ registro.humor.nivelDoHumor }}</div>
+                                            </div>
+
+                                            <div class="d-flex gap-2 flex-wrap justify-content-end">
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    ng-click="editarHumorRegistro(registro)">
+                                                    Editar humor
+                                                </button>
+
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    ng-click="editarHabitosRegistro(registro)">
+                                                    Editar hábitos
+                                                </button>
+
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    ng-click="excluirRegistro(registro)">
+                                                    Excluir registro
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="fw-bold mb-1">Observação</div>
+                                        <div class="muted-small">
+                                            {{ registro.humor && registro.humor.observacao ? registro.humor.observacao :
+                                            'Sem observação.' }}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="fw-bold mb-2">Hábitos</div>
+                                        <div class="habits-list" ng-if="registro.habitos.length">
+                                            <span class="habit-pill"
+                                                ng-repeat="habito in registro.habitos track by $index"
+                                                ng-class="habito.concluido ? 'habit-done' : 'habit-pending'">
+                                                {{ habito.concluido ? '✔' : '•' }} {{ habito.nome }}
+                                            </span>
+                                        </div>
+                                        <div class="muted-small" ng-if="!registro.habitos.length">Nenhum hábito
+                                            registrado nesse dia.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-modal-overlay" ng-if="modalHumorAberto" ng-click="fecharModalHumor()">
+            <div class="custom-modal-panel glass-card" ng-click="$event.stopPropagation()">
+                <div class="custom-modal-header">
+                    <h5 class="custom-modal-title">{{ editandoHumor ? 'Editar humor' : 'Registrar humor' }}</h5>
+                    <button type="button" class="btn-close" aria-label="Fechar" ng-click="fecharModalHumor()"></button>
+                </div>
+                <div class="custom-modal-body">
+                    <div class="mb-3" ng-if="!editandoHumor">
+                        <label class="form-label">Data</label>
+                        <input type="date" class="form-control" ng-model="humorFormData.data">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nível do humor</label>
+                        <div class="humor-options">
+                            <div class="humor-option" ng-repeat="opcao in opcoesHumor"
+                                ng-class="{ active: humorFormData.nivelDoHumor === opcao.valor }"
+                                ng-click="selecionarHumor(opcao.valor)">
+                                <div class="emoji-big mb-2">{{ opcao.emoji }}</div>
+                                <div class="fw-bold">{{ opcao.texto }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Observação (opcional)</label>
+                        <textarea class="form-control" rows="3" ng-model="humorFormData.observacao"
+                            placeholder="Descreva seu dia em poucas palavras"></textarea>
+                    </div>
+
+                    <div class="alert alert-danger" ng-if="mensagemHumorErro">{{ mensagemHumorErro }}</div>
+                    <div class="alert alert-success" ng-if="mensagemHumorSucesso">{{ mensagemHumorSucesso }}</div>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-outline-soft"
+                        ng-click="fecharModalHumor()">Fechar</button>
+                    <button type="button" class="btn-soft-action" ng-click="salvarHumor()">Salvar humor</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-modal-overlay" ng-if="modalHabitosAberto" ng-click="fecharModalHabitos()">
+            <div class="custom-modal-panel custom-modal-panel-wide glass-card" ng-click="$event.stopPropagation()">
+                <div class="custom-modal-header">
+                    <h5 class="custom-modal-title">{{ editandoHabitos ? 'Editar hábitos' : 'Registrar hábitos' }}</h5>
+                    <button type="button" class="btn-close" aria-label="Fechar"
+                        ng-click="fecharModalHabitos()"></button>
+                </div>
+                <div class="custom-modal-body">
+                    <div class="mb-3" ng-if="!editandoHabitos">
+                        <label class="form-label">Data</label>
+                        <input type="date" class="form-control" ng-model="habitosFormData.data">
+                    </div>
+
+                    <div class="mb-3" ng-if="habitosPadrao.length && !editandoHabitos">
+                        <label class="form-label">Hábitos mais usados</label>
+                        <div class="habits-list">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                ng-repeat="habito in habitosPadrao track by $index"
+                                ng-click="usarHabitoPadrao(habito.nome)">
+                                + {{ habito.nome }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Hábitos do dia</label>
+                        <div class="habit-row" ng-repeat="habito in habitosFormData.habitos track by $index">
+                            <input type="text" class="form-control" placeholder="Nome do hábito" ng-model="habito.nome">
+                            <select class="form-select" ng-model="habito.concluido"
+                                ng-init="habito.concluido = !!habito.concluido">
+                                <option ng-value="false">Não concluído</option>
+                                <option ng-value="true">Concluído</option>
+                            </select>
+                            <button type="button" class="btn btn-outline-danger"
+                                ng-click="removerHabitoLinha($index)">Remover</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary"
+                            ng-click="adicionarHabitoLinha()">Adicionar hábito</button>
+                    </div>
+
+                    <div class="alert alert-danger" ng-if="mensagemHabitosErro">{{ mensagemHabitosErro }}</div>
+                    <div class="alert alert-success" ng-if="mensagemHabitosSucesso">{{ mensagemHabitosSucesso }}</div>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-outline-soft"
+                        ng-click="fecharModalHabitos()">Fechar</button>
+                    <button type="button" class="btn-soft-action" ng-click="salvarHabitos()">Salvar hábitos</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="./Classes/Usuario.js"></script>
+    <script src="./Classes/Habito.js"></script>
+    <script src="./Classes/Humor.js"></script>
+    <script src="./Classes/RegistroDiario.js"></script>
+    <script src="./assets/js/angular-app.js"></script>
+    <script src="./assets/js/home.js"></script>
+</body>
+
+</html>
