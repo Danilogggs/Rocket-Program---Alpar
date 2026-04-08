@@ -151,6 +151,17 @@
                                         <label class="form-label">Data do registro</label>
                                         <input type="date" class="form-control" ng-model="filtros.data">
                                     </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Nível do humor</label>
+                                        <select class="form-select" ng-model="filtros.humorNivel">
+                                            <option value="">Todos</option>
+                                            <option ng-repeat="opcao in opcoesHumor" value="{{ opcao.valor }}">
+                                                {{ opcao.emoji }} {{ opcao.texto }}
+                                            </option>
+                                        </select>
+                                    </div>
+
                                     <div class="col-12 d-flex gap-2">
                                         <button type="button" class="btn-soft-action flex-fill"
                                             ng-click="aplicarFiltros()">Filtrar</button>

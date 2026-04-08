@@ -94,10 +94,57 @@
     "foto": "usersImg/1775658579138_untitled_diagram-2025-10-08-144536.png",
     "habitosPadrao": [
       {
-        "nome": "teste",
+        "nome": "TESTE",
+        "concluido": false
+      },
+      {
+        "nome": "DIOGENES",
         "concluido": false
       }
     ],
-    "registrosDiarios": []
+    "registrosDiarios": [
+      {
+        "id": "2026-04-08_1775671413256",
+        "data": "2026-04-08",
+        "humor": {
+          "nivelDoHumor": 4,
+          "observacao": ""
+        },
+        "habitos": [
+          {
+            "nome": "teste",
+            "concluido": true
+          }
+        ]
+      },
+      {
+        "id": "2026-04-09_1775672093861",
+        "data": "2026-04-09",
+        "humor": {
+          "nivelDoHumor": 4,
+          "observacao": ""
+        },
+        "habitos": [
+          {
+            "nome": "DIOGENES",
+            "concluido": true
+          }
+        ]
+      },
+      {
+        "id": "2026-04-17_1775672119070",
+        "data": "2026-04-17",
+        "humor": {
+          "nivelDoHumor": 3,
+          "observacao": ""
+        },
+        "habitos": [
+          {
+            "nome": "TESTE",
+            "concluido": false
+          }
+        ]
+      }
+    ]
   }
 ]
