@@ -86,5 +86,18 @@
     "foto": "usersImg/1775567358492_podcast2.png",
     "habitosPadrao": [],
     "registrosDiarios": []
+  },
+  {
+    "nome": "Diogenes",
+    "email": "Diogenes@Diogenes.Diogenes",
+    "senha": "Diogenes1",
+    "foto": "usersImg/1775658579138_untitled_diagram-2025-10-08-144536.png",
+    "habitosPadrao": [
+      {
+        "nome": "teste",
+        "concluido": false
+      }
+    ],
+    "registrosDiarios": []
   }
 ]

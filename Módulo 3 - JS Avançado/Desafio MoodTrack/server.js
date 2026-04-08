@@ -33,7 +33,7 @@ function normalizarEmail(email) {
     return String(email || '').trim().toLowerCase();
 }
 
-function sanitizarString(valor) {
+function limparTexto(valor) {
     return String(valor || '').trim();
 }
 
@@ -67,46 +67,46 @@ function validarDataISO(data) {
     return /^\d{4}-\d{2}-\d{2}$/.test(String(data || ''));
 }
 
-function sanitizarHabito(habito) {
+function normalizarHabito(habito) {
     return {
-        nome: sanitizarString(habito.nome),
+        nome: limparTexto(habito.nome),
         concluido: !!habito.concluido
     };
 }
 
-function sanitizarHumor(humor) {
+function normalizarHumor(humor) {
     if (!humor) return null;
     return {
         nivelDoHumor: Number(humor.nivelDoHumor),
-        observacao: sanitizarString(humor.observacao)
+        observacao: limparTexto(humor.observacao)
     };
 }
 
-function sanitizarRegistro(registro, index = 0) {
+function normalizarRegistro(registro, index = 0) {
     return {
-        id: sanitizarString(registro.id) || `${sanitizarString(registro.data)}_${index}`,
+        id: limparTexto(registro.id) || `${limparTexto(registro.data)}_${index}`,
         data: normalizarDataEntrada(registro.data),
-        humor: registro.humor ? sanitizarHumor(registro.humor) : null,
+        humor: registro.humor ? normalizarHumor(registro.humor) : null,
         habitos: Array.isArray(registro.habitos)
-            ? registro.habitos.map(sanitizarHabito).filter((h) => h.nome)
+            ? registro.habitos.map(normalizarHabito).filter((h) => h.nome)
             : []
     };
 }
 
-function sanitizarUsuario(usuario) {
+function normalizarUsuario(usuario) {
     if (!usuario) return null;
 
     return {
-        nome: sanitizarString(usuario.nome),
-        email: sanitizarString(usuario.email),
-        senha: sanitizarString(usuario.senha),
-        foto: sanitizarString(usuario.foto),
+        nome: limparTexto(usuario.nome),
+        email: limparTexto(usuario.email),
+        senha: limparTexto(usuario.senha),
+        foto: limparTexto(usuario.foto),
         habitosPadrao: Array.isArray(usuario.habitosPadrao)
-            ? usuario.habitosPadrao.map(sanitizarHabito).filter((h) => h.nome)
+            ? usuario.habitosPadrao.map(normalizarHabito).filter((h) => h.nome)
             : [],
         registrosDiarios: Array.isArray(usuario.registrosDiarios)
             ? usuario.registrosDiarios
-                .map((registro, index) => sanitizarRegistro(registro, index))
+                .map((registro, index) => normalizarRegistro(registro, index))
                 .filter((registro) => registro.data)
             : []
     };
@@ -219,7 +219,7 @@ app.post('/login', (req, res) => {
     return res.json({
         sucesso: true,
         mensagem: 'Login realizado com sucesso.',
-        usuario: sanitizarUsuario(usuario)
+        usuario: normalizarUsuario(usuario)
     });
 });
 
@@ -236,14 +236,14 @@ app.get('/usuario', (req, res) => {
         return res.status(404).json({ sucesso: false, mensagem: 'Usuário não encontrado.' });
     }
 
-    return res.json({ sucesso: true, usuario: sanitizarUsuario(usuario) });
+    return res.json({ sucesso: true, usuario: normalizarUsuario(usuario) });
 });
 
 app.post('/cadastrar', upload.single('foto'), (req, res) => {
     try {
-        const nome = sanitizarString(req.body.nome);
-        const email = sanitizarString(req.body.email);
-        const senha = sanitizarString(req.body.senha);
+        const nome = limparTexto(req.body.nome);
+        const email = limparTexto(req.body.email);
+        const senha = limparTexto(req.body.senha);
 
         if (!nome || !email || !senha) {
             return res.status(400).json({
@@ -284,7 +284,7 @@ app.post('/cadastrar', upload.single('foto'), (req, res) => {
         return res.status(201).json({
             sucesso: true,
             mensagem: 'Usuário cadastrado com sucesso.',
-            usuario: sanitizarUsuario(novoUsuario)
+            usuario: normalizarUsuario(novoUsuario)
         });
     } catch (error) {
         return res.status(500).json({
@@ -297,9 +297,9 @@ app.post('/cadastrar', upload.single('foto'), (req, res) => {
 app.put('/usuario', upload.single('foto'), (req, res) => {
     try {
         const emailAtual = normalizarEmail(req.body.emailAtual);
-        const nome = sanitizarString(req.body.nome);
-        const email = sanitizarString(req.body.email);
-        const senha = sanitizarString(req.body.senha);
+        const nome = limparTexto(req.body.nome);
+        const email = limparTexto(req.body.email);
+        const senha = limparTexto(req.body.senha);
         const manterFoto = req.body.manterFoto;
 
         if (!emailAtual || !nome || !email || !senha) {
@@ -344,7 +344,7 @@ app.put('/usuario', upload.single('foto'), (req, res) => {
         }
 
         const usuarioAtual = usuarios[indiceUsuario];
-        let caminhoFoto = sanitizarString(usuarioAtual.foto);
+        let caminhoFoto = limparTexto(usuarioAtual.foto);
 
         if (req.file) {
             if (caminhoFoto) {
@@ -379,7 +379,7 @@ app.put('/usuario', upload.single('foto'), (req, res) => {
         return res.json({
             sucesso: true,
             mensagem: 'Dados atualizados com sucesso.',
-            usuario: sanitizarUsuario(usuarios[indiceUsuario])
+            usuario: normalizarUsuario(usuarios[indiceUsuario])
         });
     } catch (error) {
         return res.status(500).json({
@@ -412,7 +412,7 @@ app.get('/registros', (req, res) => {
 
     let registros = Array.isArray(usuario.registrosDiarios)
         ? usuario.registrosDiarios
-            .map((registro, index) => sanitizarRegistro(registro, index))
+            .map((registro, index) => normalizarRegistro(registro, index))
             .filter((registro) => registro.data)
         : [];
 
@@ -452,7 +452,7 @@ app.get('/dashboard', (req, res) => {
 
     const registros = Array.isArray(usuario.registrosDiarios)
         ? usuario.registrosDiarios
-            .map((registro, index) => sanitizarRegistro(registro, index))
+            .map((registro, index) => normalizarRegistro(registro, index))
             .filter((registro) => registro.data)
         : [];
 
@@ -490,7 +490,7 @@ app.post('/registros/humor', (req, res) => {
     const email = obterEmailDaRequisicao(req);
     const data = normalizarDataEntrada(req.body.data);
     const nivelDoHumor = Number(req.body.nivelDoHumor);
-    const observacao = sanitizarString(req.body.observacao);
+    const observacao = limparTexto(req.body.observacao);
 
     if (!email) {
         return res.status(400).json({
@@ -516,15 +516,15 @@ app.post('/registros/humor', (req, res) => {
     }
 
     const registro = obterOuCriarRegistro(usuario, data);
-    registro.humor = sanitizarHumor({ nivelDoHumor, observacao });
+    registro.humor = normalizarHumor({ nivelDoHumor, observacao });
 
-    usuarios[indice] = sanitizarUsuario(usuario);
+    usuarios[indice] = normalizarUsuario(usuario);
     salvarUsuarios(usuarios);
 
     return res.json({
         sucesso: true,
         mensagem: 'Humor registrado com sucesso.',
-        registro: sanitizarRegistro(registro)
+        registro: normalizarRegistro(registro)
     });
 });
 
@@ -547,8 +547,8 @@ app.post('/registros/habitos', (req, res) => {
         });
     }
 
-    const habitosSanitizados = habitos
-        .map(sanitizarHabito)
+    const habitosNormalizados = habitos
+        .map(normalizarHabito)
         .filter((h) => h.nome);
 
     const { usuarios, indice, usuario } = buscarUsuarioPorEmail(email);
@@ -562,12 +562,11 @@ app.post('/registros/habitos', (req, res) => {
 
     const registro = obterOuCriarRegistro(usuario, data);
 
-    /* substitui completamente os hábitos daquele dia */
-    registro.habitos = habitosSanitizados;
+    registro.habitos = habitosNormalizados;
 
     const mapaHabitos = new Map(
         (Array.isArray(usuario.habitosPadrao) ? usuario.habitosPadrao : [])
-            .map((h) => [h.nome.toLowerCase(), sanitizarHabito(h)])
+            .map((h) => [h.nome.toLowerCase(), normalizarHabito(h)])
     );
 
     registro.habitos.forEach((h) => {
@@ -576,13 +575,13 @@ app.post('/registros/habitos', (req, res) => {
 
     usuario.habitosPadrao = Array.from(mapaHabitos.values());
 
-    usuarios[indice] = sanitizarUsuario(usuario);
+    usuarios[indice] = normalizarUsuario(usuario);
     salvarUsuarios(usuarios);
 
     return res.json({
         sucesso: true,
         mensagem: 'Hábitos registrados com sucesso.',
-        registro: sanitizarRegistro(registro),
+        registro: normalizarRegistro(registro),
         habitosPadrao: usuario.habitosPadrao
     });
 });
@@ -631,7 +630,7 @@ app.delete('/registros/:data', (req, res) => {
         });
     }
 
-    usuarios[indice] = sanitizarUsuario(usuario);
+    usuarios[indice] = normalizarUsuario(usuario);
     salvarUsuarios(usuarios);
 
     return res.json({
